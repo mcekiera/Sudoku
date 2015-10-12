@@ -4,33 +4,21 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Board {
-
-    final int side;
-    final Cell[][] board;
-    final int total;
+    
+    final private Cell[][] board;
+    final private List<List<Cell>> groups;
     static int count = 0;
     static int x = 0;
     static int y = 0;
-    private List<List<Integer>> checkedNumbers;
-    private List<List<Cell>> groups;
 
-    public Board(int side){
-        this.side = side;
-        total = side * side;
+    public Board(){
         board = createCells();
-        checkedNumbers = prepareIntegerList(side * side);
-        groups = prepareCellList(side);
+        groups = createGroups(9);
         fillGroups();
         fillBoard();
-        System.out.println(count);
-        System.out.println(this.toString() + "\n");
     }
 
-
-
     public Cell[][] fillBoard(){
-        int value = (int)(Math.random()*0+1);
-
         if(count == 81){
             return board;
         }else if(addNumber()){
@@ -50,22 +38,17 @@ public class Board {
                 board[x][y].setValue(attempt);
                 return true;
             } else {
-                if (attempt < 9) {
-                    attempt++;
-                } else {
-                    attempt = 1;
-                }
+                attempt = attempt < 9 ? ++attempt : 1;
                 attempts++;
             }
         }
         return false;
-
     }
 
     public Cell[][] createCells() {
-        Cell[][] cells = new Cell[side][side];
-        for(int i = 0; i < side; i++) {
-            for(int j = 0; j < side; j++) {
+        Cell[][] cells = new Cell[9][9];
+        for(int i = 0; i < 9; i++) {
+            for(int j = 0; j < 9; j++) {
                 Cell cell = new Cell(i,j);
                 cells[i][j] = cell;
             }
@@ -106,7 +89,7 @@ public class Board {
     }
 
     public boolean passValue(int i){
-        return checkRow(i) && checkColumn(i) && checkArea(i) && board[x][y].isValid(i);
+        return checkRow(i) && checkColumn(i) && checkArea(i) && board[x][y].isValidValue(i);
     }
 
     public void forward(){
@@ -131,22 +114,11 @@ public class Board {
 
     }
 
-    public List<List<Integer>> prepareIntegerList(int capacity){
-        List<List<Integer>> list = new ArrayList<List<Integer>>(capacity);
+    public <T> List<List<T>> createGroups(int capacity){
+        List<List<T>> list = new ArrayList<List<T>>(capacity);
 
         for(int i = 0; i < capacity; i++){
-          List<Integer> temp = new ArrayList<Integer>();
-          list.add(temp);
-        }
-
-        return list;
-    }
-
-    public List<List<Cell>> prepareCellList(int capacity){
-        List<List<Cell>> list = new ArrayList<List<Cell>>(capacity);
-
-        for(int i = 0; i < capacity; i++){
-            List<Cell> temp = new ArrayList<Cell>();
+            List<T> temp = new ArrayList<T>();
             list.add(temp);
         }
 
@@ -156,8 +128,8 @@ public class Board {
     @Override
     public String toString(){
         String result = "";
-        for(int i = 0; i < side; i++){
-            for(int j = 0; j < side; j++){
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
                 result += board[i][j].toString();
             }
             result += "\n";
@@ -166,6 +138,6 @@ public class Board {
     }
 
     public static void main(String[] args){
-        Board board = new Board(9);
+        Board board = new Board();
     }
 }

@@ -9,12 +9,12 @@ public class Cell {
     private int value;
     private int group;
     private Set<Integer> triedValues;
-    private boolean filled = false;
 
     public Cell(int x, int y){
         this.x = x;
         this.y = y;
         triedValues = new HashSet<Integer>(9);
+        group = identifyGroup();
     }
 
     public void setValue(int value){
@@ -27,17 +27,17 @@ public class Cell {
     }
 
     public int getGroup(){
-        return identifyGroup();
+        return group;
     }
 
     public int identifyGroup(){
         int xx = x/3;
         int yy = y/3;
-        int r = x<3 ? 0 : x<6 ? 2 :4;
+        int r = x<3 ? 0 : x<6 ? 2 : 4;
         return xx+yy+r;
     }
 
-    public boolean isValid(int i){
+    public boolean isValidValue(int i){
         return triedValues.isEmpty() || !triedValues.contains(Integer.valueOf(i));
     }
 
