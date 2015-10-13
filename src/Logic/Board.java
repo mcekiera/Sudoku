@@ -1,6 +1,7 @@
 package Logic;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class Board {
@@ -158,64 +159,39 @@ public class Board {
     }
 
     public void makeHoles(){
-        List<Cell> done = new ArrayList<Cell>();
-        for(int i = 0; i < 35; i++ ){
-
-            int hole = (int)(Math.random()*81);
-
-            Cell cell = cells.get(hole);
-            if(!done.contains(cell)) {
-                int tempValue = cell.getValue();
+        List<Cell> random = new ArrayList<Cell>(cells);
+        List<Cell> empty = new ArrayList<Cell>();
+        Collections.shuffle(random);
+        int temp = 0;
+        int x = 0;
+        while(x < 3) {
+            for (Cell cell : random) {
+                temp = cell.getValue();
                 cell.setValue(0);
-                done.add(cell);
-
-                if (uniqueSolution(done)) {
-                    System.out.println(this.toString());
+                if (testUniqueness(random)) {
+                    empty.add(cell);
                 } else {
-                    cell.setValue(tempValue);
-                    done.remove(cell);
-                    i--;
-                    System.out.println("not unique");
+                    cell.setValue(temp);
                 }
-            }else{
-                System.out.println("skip");
-                i--;
             }
+            x++;
         }
-
-        for(Cell cell : cells){
-            System.out.println(cells.indexOf(cell));
-        }
-        System.out.println(this.toString());
 
     }
 
-    public boolean uniqueSolution(List<Cell> cells){
-        for(Cell cell : cells){
-            if(!verifyUniqueness(cell)){
-                return  false;
+    public boolean testUniqueness(List<Cell> list){
+        for(Cell cell : list) {
+            row = cell.getRow();
+            column = cell.getColumn();
+            count = cells.indexOf(cell);
+            int counter = 0;
+            for (int i = 1; i <= 9; i++) {
+                if (passValue(i)){ counter++; }
+                if (counter > 1){ return false; }
             }
         }
         return true;
     }
-
-    public boolean verifyUniqueness(Cell cell){
-        row = cell.getRow();
-        column = cell.getColumn();
-        count = cells.indexOf(cell);
-        int counter = 0;
-        for(int i = 1; i <= 9; i++){
-            if(passValue(i)){
-                counter++;
-            }
-            if(counter>1){
-                System.out.println("false");
-                return false;
-            }
-        }
-        return true;
-    }
-
 
 
     @Override
