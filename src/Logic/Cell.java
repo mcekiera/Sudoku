@@ -4,17 +4,25 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class Cell {
-    private int x;
-    private int y;
+    private int row;
+    private int column;
     private int value;
     private int group;
     private Set<Integer> triedValues;
 
     public Cell(int x, int y){
-        this.x = x;
-        this.y = y;
+        this.row = x;
+        this.column = y;
         triedValues = new HashSet<Integer>(9);
         group = identifyGroup();
+    }
+
+    public int getRow(){
+        return row;
+    }
+
+    public int getColumn(){
+        return column;
     }
 
     public void setValue(int value){
@@ -30,11 +38,11 @@ public class Cell {
         return group;
     }
 
-    public int identifyGroup(){
-        int xx = x/3;
-        int yy = y/3;
-        int r = x<3 ? 0 : x<6 ? 2 : 4;
-        return xx+yy+r;
+    private int identifyGroup(){
+        int x = row /3;
+        int y = column /3;
+        int modifier = row <3 ? 0 : row <6 ? 2 : 4;
+        return x+y+modifier;
     }
 
     public boolean isValidValue(int i){
@@ -43,6 +51,10 @@ public class Cell {
 
     public void reset(){
         value = 0;
+        triedValues.clear();
+    }
+
+    public void clearMemory(){
         triedValues.clear();
     }
 
@@ -56,7 +68,7 @@ public class Cell {
         if(obj == null){
             return false;
         }else if(obj.getClass() == this.getClass()){
-            if(((Cell)obj).getValue() == this.getValue()){
+            if(((Cell)obj).getValue() == this.getValue() && ((Cell)obj).getRow() == this.getRow() && ((Cell)obj).getColumn() == this.getColumn()){
                 return true;
             }else{
                 return false;

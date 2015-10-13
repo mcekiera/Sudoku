@@ -5,82 +5,97 @@ import java.util.List;
 
 public class Board {
     
-    final private Cell[][] board;
-    final private List<List<Cell>> groups;
-    static int count = 0;
-    static int x = 0;
-    static int y = 0;
+    final private Cell[][] grid;
+    final private List<List<Cell>> blocks;
+    final private List<Cell> cells;
+    int count = 0;
+    int row = 0;
+    int column = 0;
+
 
     public Board(){
-        board = createCells();
-        groups = createGroups(9);
-        fillGroups();
-        fillBoard();
+        cells = new ArrayList<Cell>(81);
+        grid = createCells();
+        blocks = createBlocks(9);
+        init();
+        System.out.println(this.toString());
     }
 
-    public Cell[][] fillBoard(){
+    public void init(){
+        fillBlocks();
+        fillGrid();
+        clearCellsMemory();
+        makeHoles();
+    }
+
+    public Cell[][] fillGrid(){
         if(count == 81){
-            return board;
+            return grid;
         }else if(addNumber()){
             forward();
-            return fillBoard();
+            return fillGrid();
         }else {
-            previous();
-            return fillBoard();
+            backtrace();
+            return fillGrid();
         }
     }
 
-    public boolean addNumber(){
-        int attempt = (int)(Math.random()*9+1);
+    private Cell[][] getGrid(){
+        return grid;
+    }
+
+    private boolean addNumber(){
+        int value = (int)(Math.random()*9+1);
         int attempts = 0;
         while(attempts < 9) {
-            if (passValue(attempt)) {
-                board[x][y].setValue(attempt);
+            if (passValue(value)) {
+                cells.get(count).setValue(value);
                 return true;
             } else {
-                attempt = attempt < 9 ? ++attempt : 1;
+                value = value < 9 ? ++value : 1;
                 attempts++;
             }
         }
         return false;
     }
 
-    public Cell[][] createCells() {
+    private Cell[][] createCells() {
         Cell[][] cells = new Cell[9][9];
         for(int i = 0; i < 9; i++) {
             for(int j = 0; j < 9; j++) {
                 Cell cell = new Cell(i,j);
                 cells[i][j] = cell;
+                this.cells.add(cell);
             }
         }
         return cells;
     }
 
-    public void fillGroups(){
+    private void fillBlocks(){
 
-        for(Cell[] cells : board){
+        for(Cell[] cells : grid){
             for(Cell cell : cells){
-                groups.get(cell.getGroup()).add(cell);
+                blocks.get(cell.getGroup()).add(cell);
             }
         }
     }
 
-    public boolean checkRow(int i){
-        for(Cell cell : board[x]){
+    private boolean checkRow(int i){
+        for(Cell cell : grid[row]){
             if(i == cell.getValue()) return false;
         }
         return true;
     }
 
-    public boolean checkColumn(int i){
-        for(Cell[] cells : board){
-            if(i == cells[y].getValue()) return false;
+    private boolean checkColumn(int i){
+        for(Cell[] cells : grid){
+            if(i == cells[column].getValue()) return false;
         }
         return true;
     }
 
-    public boolean checkArea(int i){
-        for(Cell cell : groups.get(board[x][y].getGroup())){
+    private boolean checkBlock(int i){
+        for(Cell cell : blocks.get(cells.get(count).getGroup())){
             if(cell.getValue() == i){
                 return false;
             }
@@ -88,49 +103,127 @@ public class Board {
         return true;
     }
 
-    public boolean passValue(int i){
-        return checkRow(i) && checkColumn(i) && checkArea(i) && board[x][y].isValidValue(i);
+    private boolean passValue(int i){
+        return checkRow(i) && checkColumn(i) && checkBlock(i) && cells.get(count).isValidValue(i);
     }
 
-    public void forward(){
+    private void forward(){
         count++;
-        if(y<8){
-            y++;
+        if(column <8){
+            column++;
         }else{
-            y = 0;
-            x++;
+            column = 0;
+            row++;
         }
     }
 
-    public void previous(){
-        board[x][y].reset();
+    private void backtrace(){
+        grid[row][column].reset();
         count--;
-        if(y > 0){
-            y--;
+        if(column > 0){
+            column--;
         }else{
-            y = 8;
-            x--;
+            column = 8;
+            row--;
         }
 
     }
 
-    public <T> List<List<T>> createGroups(int capacity){
+    private <T> List<List<T>> createBlocks(int capacity){
         List<List<T>> list = new ArrayList<List<T>>(capacity);
 
         for(int i = 0; i < capacity; i++){
             List<T> temp = new ArrayList<T>();
             list.add(temp);
         }
-
         return list;
     }
+
+    public void clearCellsMemory(){
+        for(Cell cell : cells){
+            cell.clearMemory();
+        }
+    }
+
+    public Cell[][] gridCopy(){
+        Cell[][] copy = new Cell[9][9];
+        for(int x = 0; x < 9; x++){
+            for(int y = 0; y < 9; y++){
+                Cell cell = new Cell(x,y);
+                cell.setValue(grid[x][y].getValue());
+                copy[x][y] = cell;
+            }
+        }
+        return copy;
+    }
+
+    public void makeHoles(){
+        List<Cell> done = new ArrayList<Cell>();
+        for(int i = 0; i < 35; i++ ){
+
+            int hole = (int)(Math.random()*81);
+
+            Cell cell = cells.get(hole);
+            if(!done.contains(cell)) {
+                int tempValue = cell.getValue();
+                cell.setValue(0);
+                done.add(cell);
+
+                if (uniqueSolution(done)) {
+                    System.out.println(this.toString());
+                } else {
+                    cell.setValue(tempValue);
+                    done.remove(cell);
+                    i--;
+                    System.out.println("not unique");
+                }
+            }else{
+                System.out.println("skip");
+                i--;
+            }
+        }
+
+        for(Cell cell : cells){
+            System.out.println(cells.indexOf(cell));
+        }
+        System.out.println(this.toString());
+
+    }
+
+    public boolean uniqueSolution(List<Cell> cells){
+        for(Cell cell : cells){
+            if(!verifyUniqueness(cell)){
+                return  false;
+            }
+        }
+        return true;
+    }
+
+    public boolean verifyUniqueness(Cell cell){
+        row = cell.getRow();
+        column = cell.getColumn();
+        count = cells.indexOf(cell);
+        int counter = 0;
+        for(int i = 1; i <= 9; i++){
+            if(passValue(i)){
+                counter++;
+            }
+            if(counter>1){
+                System.out.println("false");
+                return false;
+            }
+        }
+        return true;
+    }
+
+
 
     @Override
     public String toString(){
         String result = "";
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
-                result += board[i][j].toString();
+                result += grid[i][j].toString() + "  ";
             }
             result += "\n";
         }
