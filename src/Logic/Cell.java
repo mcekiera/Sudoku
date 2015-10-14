@@ -7,17 +7,21 @@ public class Cell {
     private int row;
     private int column;
     private int value;
-    private int group;
-    private Set<Integer> triedValues;
+    private int block;
+    private boolean pre = false;
+
+    private Set<Integer> testedValues;
+    private Set<Integer> valueSet;
 
     public Cell(int x, int y){
         this.row = x;
         this.column = y;
-        triedValues = new HashSet<Integer>(9);
-        group = identifyGroup();
+        testedValues = new HashSet<Integer>(9);
+        valueSet = createValueSet();
+        block = specifyBlock(x,y);
     }
 
-    public int getRow(){
+    public int getRow() {
         return row;
     }
 
@@ -27,35 +31,44 @@ public class Cell {
 
     public void setValue(int value){
         this.value = value;
-        triedValues.add(value);
+        testedValues.add(value);
+        valueSet.remove(value);
     }
 
     public int getValue(){
         return value;
     }
 
-    public int getGroup(){
-        return group;
+    public int getBlock(){
+        return block;
     }
 
-    private int identifyGroup(){
+    public boolean passValue(int i){
+        return testedValues.isEmpty() || !testedValues.contains(i);
+    }
+
+    public void reset(){
+        value = 0;
+        testedValues.clear();
+    }
+
+    public void clearMemory(){
+        testedValues.clear();
+    }
+
+    private static int specifyBlock(int row, int column){
         int x = row /3;
         int y = column /3;
         int modifier = row <3 ? 0 : row <6 ? 2 : 4;
         return x+y+modifier;
     }
 
-    public boolean isValidValue(int i){
-        return triedValues.isEmpty() || !triedValues.contains(Integer.valueOf(i));
-    }
-
-    public void reset(){
-        value = 0;
-        triedValues.clear();
-    }
-
-    public void clearMemory(){
-        triedValues.clear();
+    public static Set<Integer> createValueSet(){
+        Set<Integer> values = new HashSet<Integer>();
+        for(int i = 1; i <= 9; i++){
+            values.add(i);
+        }
+        return values;
     }
 
     @Override
@@ -76,6 +89,18 @@ public class Cell {
         }else{
             return false;
         }
+    }
+
+
+
+
+    public void setPre(boolean pre) {
+        this.pre = pre;
+    }
+
+
+    public boolean isPre(){
+        return pre;
     }
 
 }

@@ -12,6 +12,7 @@ public class Board {
     int count = 0;
     int row = 0;
     int column = 0;
+    static boolean ticktack = false;
 
 
     public Board(){
@@ -19,14 +20,15 @@ public class Board {
         grid = createCells();
         blocks = createBlocks(9);
         init();
-        System.out.println(this.toString());
     }
 
     public void init(){
         fillBlocks();
+
         fillGrid();
         clearCellsMemory();
         makeHoles();
+        System.out.println(this.toString());
     }
 
     public Cell[][] fillGrid(){
@@ -46,7 +48,13 @@ public class Board {
     }
 
     private boolean addNumber(){
-        int value = (int)(Math.random()*9+1);
+        int value =  (int)(Math.random()*9+1);
+        System.out.println(this.toString());
+        if(cells.get(count).isPre()){
+            value = cells.get(count).getValue();
+            cells.get(count).setPre(false);
+        }
+
         int attempts = 0;
         while(attempts < 9) {
             if (passValue(value)) {
@@ -73,11 +81,8 @@ public class Board {
     }
 
     private void fillBlocks(){
-
-        for(Cell[] cells : grid){
-            for(Cell cell : cells){
-                blocks.get(cell.getGroup()).add(cell);
-            }
+        for(Cell cell : cells){
+            blocks.get(cell.getBlock()).add(cell);
         }
     }
 
@@ -96,7 +101,7 @@ public class Board {
     }
 
     private boolean checkBlock(int i){
-        for(Cell cell : blocks.get(cells.get(count).getGroup())){
+        for(Cell cell : blocks.get(cells.get(count).getBlock())){
             if(cell.getValue() == i){
                 return false;
             }
@@ -105,7 +110,7 @@ public class Board {
     }
 
     private boolean passValue(int i){
-        return checkRow(i) && checkColumn(i) && checkBlock(i) && cells.get(count).isValidValue(i);
+        return checkRow(i) && checkColumn(i) && checkBlock(i) && cells.get(count).passValue(i);
     }
 
     private void forward(){
@@ -163,20 +168,37 @@ public class Board {
         List<Cell> empty = new ArrayList<Cell>();
         Collections.shuffle(random);
         int temp = 0;
-        int x = 0;
-        while(x < 3) {
-            for (Cell cell : random) {
-                temp = cell.getValue();
-                cell.setValue(0);
-                if (testUniqueness(random)) {
-                    empty.add(cell);
-                } else {
-                    cell.setValue(temp);
-                }
+        for(Cell cell : random){
+            temp = cell.getValue();
+            cell.setValue(0);
+            if(testUniqueness(random)){
+                empty.add(cell);
+            }else{
+                cell.setValue(temp);
             }
-            x++;
         }
 
+    }
+
+    public void prefill(){
+        for(int i = 0; i < 11; i++){
+            row = (int)(Math.random()*9);
+            column = (int)(Math.random()*9);
+            int value = (int)(Math.random()*9+1);
+
+
+            if(passValue(value)) {
+                grid[row][column].setValue(value);
+                grid[row][column].setPre(true);
+                int position = (row+1)*(column+1)-1;
+                cells.add(position, grid[row][column]);
+            }else{
+                i--;
+            }
+        }
+        row = 0;
+        column = 0;
+        System.out.println(this.toString());
     }
 
     public boolean testUniqueness(List<Cell> list){
