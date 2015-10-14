@@ -7,34 +7,43 @@ public class Solver {
     ListIterator<Cell> iterator;
     Cell current;
 
-    public Solver(StandardBoard board){
+    public Solver setBoard(StandardBoard board){
         this.board = board;
         iterator = board.iterator();
         current = iterator.next();
+        return this;
     }
 
-    public StandardBoard solve(){
-        if(iterator.hasNext()){
-            if(passValue(iterator.next())) {
+    public StandardBoard solve() {
+        if(passValue(current)) {
+            if(iterator.hasNext()) {
                 current = iterator.next();
                 return solve();
-            }else{
-                current.reset();
-                current = iterator.previous();
-                return solve();
+            }else {
+                return board;
             }
         }else {
-            return board;
+            current.reset();
+            current = iterator.previous();
+            return solve();
         }
     }
 
-    private boolean passValue(Cell cell){
-        for(int i : cell.getAvailabilityList()){
-            if(!board.testConditions(cell,i)){
-                cell.excludeValue(i);
+    private boolean passValue(Cell cell) {
+        ListIterator<Integer> iterator = cell.iterator();
+        while(iterator.hasNext()) {
+            if(!board.testConditions(cell,iterator.next())) {
+                iterator.remove();
             }
         }
 
         return cell.addRandom();
+    }
+
+    public static void main(String[] args) {
+        StandardBoard board = new StandardBoard();
+        Solver solver = new Solver();
+        solver.setBoard(board).solve();
+        System.out.println(board.toString());
     }
 }

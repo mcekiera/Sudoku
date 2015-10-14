@@ -1,10 +1,8 @@
 package Logic;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
-public class Cell {
+public class Cell implements Iterable<Integer>{
     private int row;
     private int column;
     private int value;
@@ -57,8 +55,8 @@ public class Cell {
         availabilityList.remove(Integer.valueOf(value));
     }
 
-    public List<Integer> getAvailabilityList(){
-        return availabilityList;
+    public ListIterator getAvailabilityList(){
+        return availabilityList.listIterator();
     }
 
     public void reset(){
@@ -120,4 +118,8 @@ public class Cell {
         return pre;
     }
 
+    @Override
+    public ListIterator<Integer> iterator() {
+        return availabilityList.listIterator();
+    }
 }

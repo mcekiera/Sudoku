@@ -10,7 +10,7 @@ public class StandardBoard implements Iterable<Cell>{
 
     public StandardBoard(){
         grid = new Cell[9][9];
-        blocks = new ArrayList<List<Cell>>(9);
+        blocks = createBlocks(9);
         cells = new ArrayList<Cell>(81);
         createCells();
     }
@@ -65,6 +65,29 @@ public class StandardBoard implements Iterable<Cell>{
             }
         }
         return true;
+    }
+
+    private <T> List<List<T>> createBlocks(int capacity){
+        List<List<T>> list = new ArrayList<List<T>>(capacity);
+
+        for(int i = 0; i < capacity; i++){
+            List<T> temp = new ArrayList<T>();
+            list.add(temp);
+        }
+        return list;
+    }
+
+
+    @Override
+    public String toString(){
+        String result = "";
+        for(int i = 0; i < 9; i++){
+            for(int j = 0; j < 9; j++){
+                result += grid[i][j].toString() + "  ";
+            }
+            result += "\n";
+        }
+        return result;
     }
 
 
