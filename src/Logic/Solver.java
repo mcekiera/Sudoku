@@ -16,16 +16,14 @@ public class Solver {
         return this;
     }
 
-    public StandardBoard solve() {
-        System.out.println(current.getRow()+","+current.getColumn() + ": " + current.getAvailabilityList());
+    public boolean solve() {
             if (current.getValue()!=0 || passValue(current)) {
-
                 if (iterator.hasNext()) {
                     current = iterator.next();
 
                     return solve();
                 } else {
-                    return board;
+                    return true;
                 }
             } else {
                 current.reset();

@@ -2,7 +2,7 @@ package Logic;
 
 import java.util.*;
 
-public class StandardBoard implements Iterable<Cell>{
+public class StandardBoard implements Iterable<Cell>, Cloneable{
 
     final private Cell[][] grid;
     final private List<List<Cell>> blocks;
@@ -14,7 +14,6 @@ public class StandardBoard implements Iterable<Cell>{
         blocks = createBlocks(9);
         cells = new ArrayList<Cell>(81);
         createCells();
-        prefill();
     }
 
     public void setIteration(Iteration order){
@@ -30,20 +29,6 @@ public class StandardBoard implements Iterable<Cell>{
                 blocks.get(cell.getBlock()).add(cell);
             }
         }
-    }
-
-    public boolean addValue(Cell cell, int value){
-        if(testConditions(cell,value)){
-            return true;
-        }else{
-            return false;
-        }
-    }
-
-    public List<Cell> getRandomOrder(){
-        List<Cell> randomOrder = new ArrayList<Cell>(cells);
-        Collections.shuffle(randomOrder);
-        return randomOrder;
     }
 
     public boolean testConditions(Cell cell, int value){
@@ -75,7 +60,6 @@ public class StandardBoard implements Iterable<Cell>{
 
     private <T> List<List<T>> createBlocks(int capacity){
         List<List<T>> list = new ArrayList<List<T>>(capacity);
-
         for(int i = 0; i < capacity; i++){
             List<T> temp = new ArrayList<T>();
             list.add(temp);
@@ -98,22 +82,6 @@ public class StandardBoard implements Iterable<Cell>{
         }
     }
 
-    public void prefill(){
-        iteration = Iteration.RANDOM;
-        int counter = 11;
-        for(Cell cell : this){
-            int random = (int)(Math.random()*9+1);
-            if(testConditions(cell, random)) {
-                cell.presetValue(random);
-            }
-            if(counter==0){
-                break;
-            }
-        }
-        iteration = Iteration.LINEAR;
-        System.out.println(this.toString());
-
-    }
 
     @Override
     public String toString(){
@@ -129,7 +97,7 @@ public class StandardBoard implements Iterable<Cell>{
 
     @Override
     public ListIterator<Cell> iterator() {
-        /*if(iteration.equals(Iteration.LINEAR)){
+        if(iteration.equals(Iteration.LINEAR)){
             System.out.println("linear");
             return linearOrderIterator();
         }else if(iteration.equals(Iteration.RANDOM)){
@@ -141,7 +109,7 @@ public class StandardBoard implements Iterable<Cell>{
         }else if(iteration.equals(Iteration.CIRCULAR)){
             System.out.println("circular");
             return linkedIterator();
-        }  */
+        }
         return linearOrderIterator();
     }
 
@@ -157,18 +125,15 @@ public class StandardBoard implements Iterable<Cell>{
 
     public ListIterator<Cell> sShapeOrderIterator(){
         List<Cell> sShape = new ArrayList<Cell>();
-        List<Cell> temp = new ArrayList<Cell>();
+        List<Cell> temp;
         for(int i = 0; i < 9; i++){
             if((i+1)%2==0){
                 temp = new ArrayList<Cell>(Arrays.asList(grid[i]));
-                System.out.println(temp);
                 Collections.reverse(temp);
-                System.out.println(temp);
                 sShape.addAll(temp);
             }else{
                 sShape.addAll(Arrays.asList(grid[i]));
             }
-            System.out.println(this.toString() + "\n");
         }
 
         return sShape.listIterator();
