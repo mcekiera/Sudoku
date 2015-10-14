@@ -46,8 +46,14 @@ public class Cell implements Iterable<Integer>{
             return false;
         }else {
             value = availabilityList.get(0);
+            availabilityList.remove(Integer.valueOf(value));
             return true;
         }
+    }
+
+    public void presetValue(int value){
+        this.value = value;
+        availabilityList.clear();
     }
 
     public void excludeValue(int value){

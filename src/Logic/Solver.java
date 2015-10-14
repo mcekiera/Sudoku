@@ -1,32 +1,39 @@
 package Logic;
 
-import java.util.ListIterator;
+import java.util.*;
 
 public class Solver {
     private StandardBoard board;
     private ListIterator<Cell> iterator;
+    private List<Integer> size;
     private Cell current;
 
     public Solver setBoard(StandardBoard board){
         this.board = board;
         iterator = board.iterator();
         current = iterator.next();
+        size = new ArrayList<Integer>(81);
         return this;
     }
 
     public StandardBoard solve() {
-        if(passValue(current)) {
-            if(iterator.hasNext()) {
-                current = iterator.next();
+        System.out.println(current.getRow()+","+current.getColumn() + ": " + current.getAvailabilityList());
+            if (current.getValue()!=0 || passValue(current)) {
+
+                if (iterator.hasNext()) {
+                    current = iterator.next();
+
+                    return solve();
+                } else {
+                    return board;
+                }
+            } else {
+                current.reset();
+                current = iterator.previous();
+                current.setValue(0);
                 return solve();
-            }else {
-                return board;
             }
-        }else {
-            current.reset();
-            current = iterator.previous();
-            return solve();
-        }
+
     }
 
     private boolean passValue(Cell cell) {

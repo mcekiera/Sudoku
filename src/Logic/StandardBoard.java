@@ -14,6 +14,7 @@ public class StandardBoard implements Iterable<Cell>{
         blocks = createBlocks(9);
         cells = new ArrayList<Cell>(81);
         createCells();
+        prefill();
     }
 
     public void setIteration(Iteration order){
@@ -97,12 +98,29 @@ public class StandardBoard implements Iterable<Cell>{
         }
     }
 
+    public void prefill(){
+        iteration = Iteration.RANDOM;
+        int counter = 11;
+        for(Cell cell : this){
+            int random = (int)(Math.random()*9+1);
+            if(testConditions(cell, random)) {
+                cell.presetValue(random);
+            }
+            if(counter==0){
+                break;
+            }
+        }
+        iteration = Iteration.LINEAR;
+        System.out.println(this.toString());
+
+    }
+
     @Override
     public String toString(){
         String result = "";
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
-                result += grid[i][j].toString() + "  ";
+                result += grid[i][j].toString() + ",";
             }
             result += "\n";
         }
@@ -111,7 +129,7 @@ public class StandardBoard implements Iterable<Cell>{
 
     @Override
     public ListIterator<Cell> iterator() {
-        if(iteration.equals(Iteration.LINEAR)){
+        /*if(iteration.equals(Iteration.LINEAR)){
             System.out.println("linear");
             return linearOrderIterator();
         }else if(iteration.equals(Iteration.RANDOM)){
@@ -123,7 +141,7 @@ public class StandardBoard implements Iterable<Cell>{
         }else if(iteration.equals(Iteration.CIRCULAR)){
             System.out.println("circular");
             return linkedIterator();
-        }
+        }  */
         return linearOrderIterator();
     }
 
