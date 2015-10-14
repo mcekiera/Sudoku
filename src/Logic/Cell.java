@@ -1,7 +1,8 @@
 package Logic;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class Cell {
     private int row;
@@ -9,16 +10,13 @@ public class Cell {
     private int value;
     private int block;
     private boolean pre = false;
+    private List<Integer> availabilityList;
 
-    private Set<Integer> testedValues;
-    private Set<Integer> valueSet;
-
-    public Cell(int x, int y){
-        this.row = x;
-        this.column = y;
-        testedValues = new HashSet<Integer>(9);
-        valueSet = createValueSet();
-        block = specifyBlock(x,y);
+    public Cell(int row, int column){
+        this.row = row;
+        this.column = column;
+        availabilityList = randomOrderList();
+        block = specifyBlock(row,column);
     }
 
     public int getRow() {
@@ -31,8 +29,7 @@ public class Cell {
 
     public void setValue(int value){
         this.value = value;
-        testedValues.add(value);
-        valueSet.remove(value);
+        availabilityList.remove(Integer.valueOf(value));
     }
 
     public int getValue(){
@@ -43,17 +40,34 @@ public class Cell {
         return block;
     }
 
-    public boolean passValue(int i){
-        return testedValues.isEmpty() || !testedValues.contains(i);
+    public boolean passValue(int value){
+        return availabilityList.contains(Integer.valueOf(value));
+    }
+
+    public boolean addRandom(){
+        if(availabilityList.isEmpty()){
+            return false;
+        }else {
+            value = availabilityList.get(0);
+            return true;
+        }
+    }
+
+    public void excludeValue(int value){
+        availabilityList.remove(Integer.valueOf(value));
+    }
+
+    public List<Integer> getAvailabilityList(){
+        return availabilityList;
     }
 
     public void reset(){
         value = 0;
-        testedValues.clear();
+        availabilityList = randomOrderList();
     }
 
     public void clearMemory(){
-        testedValues.clear();
+        availabilityList = randomOrderList();
     }
 
     private static int specifyBlock(int row, int column){
@@ -61,14 +75,6 @@ public class Cell {
         int y = column /3;
         int modifier = row <3 ? 0 : row <6 ? 2 : 4;
         return x+y+modifier;
-    }
-
-    public static Set<Integer> createValueSet(){
-        Set<Integer> values = new HashSet<Integer>();
-        for(int i = 1; i <= 9; i++){
-            values.add(i);
-        }
-        return values;
     }
 
     @Override
@@ -90,6 +96,17 @@ public class Cell {
             return false;
         }
     }
+
+    public static List<Integer> randomOrderList(){
+        List<Integer> values = new ArrayList<Integer>();
+        for(int i = 1; i <= 9; i++){
+            values.add(i);
+        }
+        Collections.shuffle(values);
+        return values;
+    }
+
+
 
 
 

@@ -1,8 +1,6 @@
 package Logic;
 
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 
 public class StandardBoard implements Iterable<Cell>{
 
@@ -36,6 +34,12 @@ public class StandardBoard implements Iterable<Cell>{
         }
     }
 
+    public List<Cell> getRandomOrder(){
+        List<Cell> randomOrder = new ArrayList<Cell>(cells);
+        Collections.shuffle(randomOrder);
+        return randomOrder;
+    }
+
     public boolean testConditions(Cell cell, int value){
         return checkBlock(cell,value) && checkColumn(cell.getColumn(),value) && checkRow(cell.getRow(),value);
     }
@@ -66,8 +70,10 @@ public class StandardBoard implements Iterable<Cell>{
 
 
 
+
+
     @Override
-    public Iterator<Cell> iterator() {
+    public ListIterator<Cell> iterator() {
         return cells.listIterator();
     }
 }
