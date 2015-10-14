@@ -7,12 +7,17 @@ public class StandardBoard implements Iterable<Cell>{
     final private Cell[][] grid;
     final private List<List<Cell>> blocks;
     final private List<Cell> cells;
+    private Iteration iteration = Iteration.LINEAR;
 
     public StandardBoard(){
         grid = new Cell[9][9];
         blocks = createBlocks(9);
         cells = new ArrayList<Cell>(81);
         createCells();
+    }
+
+    public void setIteration(Iteration order){
+        iteration = order;
     }
 
     public void createCells(){
@@ -77,6 +82,20 @@ public class StandardBoard implements Iterable<Cell>{
         return list;
     }
 
+    public void updateAllCells(){
+        for(Cell cell : this){
+            updateSingleCell(cell);
+        }
+    }
+
+    public void updateSingleCell(Cell cell){
+        cell.clearMemory();
+        for(int i : Cell.randomOrderList()){
+            if(!testConditions(cell, i)){
+                cell.excludeValue(i);
+            }
+        }
+    }
 
     @Override
     public String toString(){
@@ -90,13 +109,55 @@ public class StandardBoard implements Iterable<Cell>{
         return result;
     }
 
-
-
-
-
-
     @Override
     public ListIterator<Cell> iterator() {
+        if(iteration.equals(Iteration.LINEAR)){
+            System.out.println("linear");
+            return linearOrderIterator();
+        }else if(iteration.equals(Iteration.RANDOM)){
+            System.out.println("random");
+            return randomOrderIterator();
+        }else if(iteration.equals(Iteration.S_SHAPE)){
+            System.out.println("s_shaped");
+            return sShapeOrderIterator();
+        }else if(iteration.equals(Iteration.CIRCULAR)){
+            System.out.println("circular");
+            return linkedIterator();
+        }
+        return linearOrderIterator();
+    }
+
+    public ListIterator<Cell> randomOrderIterator() {
+        ArrayList<Cell> randomOrder = new ArrayList<Cell>(cells);
+        Collections.shuffle(randomOrder);
+        return randomOrder.listIterator();
+    }
+
+    public ListIterator<Cell> linearOrderIterator() {
         return cells.listIterator();
+    }
+
+    public ListIterator<Cell> sShapeOrderIterator(){
+        List<Cell> sShape = new ArrayList<Cell>();
+        List<Cell> temp = new ArrayList<Cell>();
+        for(int i = 0; i < 9; i++){
+            if((i+1)%2==0){
+                temp = new ArrayList<Cell>(Arrays.asList(grid[i]));
+                System.out.println(temp);
+                Collections.reverse(temp);
+                System.out.println(temp);
+                sShape.addAll(temp);
+            }else{
+                sShape.addAll(Arrays.asList(grid[i]));
+            }
+            System.out.println(this.toString() + "\n");
+        }
+
+        return sShape.listIterator();
+    }
+
+    public ListIterator<Cell> linkedIterator(){
+        List<Cell> linked = new LinkedList<Cell>(cells);
+        return linked.listIterator();
     }
 }

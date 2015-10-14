@@ -49,16 +49,11 @@ public class Board {
 
     private boolean addNumber(){
         int value =  (int)(Math.random()*9+1);
-        System.out.println(this.toString());
-        if(cells.get(count).isPre()){
-            value = cells.get(count).getValue();
-            cells.get(count).setPre(false);
-        }
 
         int attempts = 0;
         while(attempts < 9) {
             if (passValue(value)) {
-                cells.get(count).setValue(value);
+                //cells.get(count).setValue(value);
                 return true;
             } else {
                 value = value < 9 ? ++value : 1;
@@ -156,7 +151,7 @@ public class Board {
         for(int x = 0; x < 9; x++){
             for(int y = 0; y < 9; y++){
                 Cell cell = new Cell(x,y);
-                cell.setValue(grid[x][y].getValue());
+                //cell.setValue(grid[x][y].getValue());
                 copy[x][y] = cell;
             }
         }
@@ -170,11 +165,11 @@ public class Board {
         int temp = 0;
         for(Cell cell : random){
             temp = cell.getValue();
-            cell.setValue(0);
+            //cell.setValue(0);
             if(testUniqueness(random)){
                 empty.add(cell);
             }else{
-                cell.setValue(temp);
+            //    cell.setValue(temp);
             }
         }
 
@@ -188,8 +183,7 @@ public class Board {
 
 
             if(passValue(value)) {
-                grid[row][column].setValue(value);
-                grid[row][column].setPre(true);
+                //grid[row][column].setValue(value);
                 int position = (row+1)*(column+1)-1;
                 cells.add(position, grid[row][column]);
             }else{

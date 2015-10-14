@@ -3,11 +3,10 @@ package Logic;
 import java.util.*;
 
 public class Cell implements Iterable<Integer>{
-    private int row;
-    private int column;
+    final private int row;
+    final private int column;
+    final private int block;
     private int value;
-    private int block;
-    private boolean pre = false;
     private List<Integer> availabilityList;
 
     public Cell(int row, int column){
@@ -55,9 +54,15 @@ public class Cell implements Iterable<Integer>{
         availabilityList.remove(Integer.valueOf(value));
     }
 
-    public ListIterator getAvailabilityList(){
+    public ListIterator availabilityList(){
         return availabilityList.listIterator();
     }
+
+    public List<Integer> getAvailabilityList(){
+        return availabilityList;
+    }
+
+
 
     public void reset(){
         value = 0;
@@ -73,6 +78,15 @@ public class Cell implements Iterable<Integer>{
         int y = column /3;
         int modifier = row <3 ? 0 : row <6 ? 2 : 4;
         return x+y+modifier;
+    }
+
+    public static List<Integer> randomOrderList(){
+        List<Integer> values = new ArrayList<Integer>();
+        for(int i = 1; i <= 9; i++){
+            values.add(i);
+        }
+        Collections.shuffle(values);
+        return values;
     }
 
     @Override
@@ -93,29 +107,6 @@ public class Cell implements Iterable<Integer>{
         }else{
             return false;
         }
-    }
-
-    public static List<Integer> randomOrderList(){
-        List<Integer> values = new ArrayList<Integer>();
-        for(int i = 1; i <= 9; i++){
-            values.add(i);
-        }
-        Collections.shuffle(values);
-        return values;
-    }
-
-
-
-
-
-
-    public void setPre(boolean pre) {
-        this.pre = pre;
-    }
-
-
-    public boolean isPre(){
-        return pre;
     }
 
     @Override

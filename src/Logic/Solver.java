@@ -3,9 +3,9 @@ package Logic;
 import java.util.ListIterator;
 
 public class Solver {
-    StandardBoard board;
-    ListIterator<Cell> iterator;
-    Cell current;
+    private StandardBoard board;
+    private ListIterator<Cell> iterator;
+    private Cell current;
 
     public Solver setBoard(StandardBoard board){
         this.board = board;
@@ -32,11 +32,10 @@ public class Solver {
     private boolean passValue(Cell cell) {
         ListIterator<Integer> iterator = cell.iterator();
         while(iterator.hasNext()) {
-            if(!board.testConditions(cell,iterator.next())) {
+            if (!board.testConditions(cell, iterator.next())) {
                 iterator.remove();
             }
         }
-
         return cell.addRandom();
     }
 
@@ -44,6 +43,7 @@ public class Solver {
         StandardBoard board = new StandardBoard();
         Solver solver = new Solver();
         solver.setBoard(board).solve();
+        board.updateAllCells();
         System.out.println(board.toString());
     }
 }
