@@ -4,68 +4,46 @@ import java.util.*;
 
 public class Solver {
     private StandardBoard board;
-    private ListIterator<Cell> iterator;
-    private List<Cell> blank;
     private List<Integer> solution;
-    private Cell current;
     private int count = 0;
     int index = 0;
 
-    public boolean solves(StandardBoard board){
-        this.board = board;
-        blank = Util.getBlankCells(board);
-        iterator = Util.getBlankCells(board).listIterator();
-        current = iterator.next();
-        while (true){
-            if (passValue(current)) {
-                if(!iterator.hasNext()){
-                    return true;
-                }
-                current = iterator.next();
-            }else{
-                if(iterator.hasPrevious()) {
-                    current.reset();
-                    current = iterator.previous();
-                }else {
-                    return false;
-                }
-            }
-        }
-    }
-
     public void setBoard(StandardBoard board){
         this.board = board;
+        count = 0;
+        index = 0;
     }
 
-    public boolean solve(List<Cell> cells, int limit){
-        System.out.println(cells.toString());
-        System.out.println(board.toString());
-        for(int i : Util.randomOrderDigits()){
-            System.out.println(cells.get(index) + " - " + index + " - " + i);
-            if(passValue(cells.get(index),i)){
-                System.out.println("in");
-                if(index < cells.size()-1) {
+    public int solve(List<Cell> cells, int limit){
+        if(index < cells.size()){
+            for(int i : Util.randomOrderDigits()){
+                if(passValue(cells.get(index),i)){
                     index += 1;
-                    solve(cells, limit);
-                }else {
-                    count++;
-                    solution = collectSolution(cells);
-                    System.out.println("up " + count);
-                    cells.get(index).reset();
-                    if(count == limit){
-                        limit = 0;
-                        return false;
+                    if(solve(cells, limit)>= limit){
+                        return count;
                     }
-                    return true;
                 }
             }
-
+            return backtrace(cells);
+        } else {
+            return finish(cells);
         }
-        index -= 1;
+    }
+
+    public int backtrace(List<Cell> cells){
         cells.get(index).reset();
+        index -= 1;
         System.out.println(board.toString());
         System.out.println(count);
-        return false;
+        return count;
+    }
+
+    public int finish(List<Cell> cells){
+        count++;
+        index -= 1;
+        solution = collectSolution(cells);
+        System.out.println("up " + count);
+        return count;
     }
 
     public List<Integer> getSolution(){
@@ -78,18 +56,6 @@ public class Solver {
             integers.add(cell.getValue());
         }
         return integers;
-    }
-
-
-
-    private boolean passValue(Cell cell) {
-        ListIterator<Integer> iterator = cell.iterator();
-        while(iterator.hasNext()) {
-            if (!board.testConditions(cell, iterator.next())) {
-                iterator.remove();
-            }
-        }
-        return cell.addRandom();
     }
 
     private boolean passValue(Cell cell, int i) {
