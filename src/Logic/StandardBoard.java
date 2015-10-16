@@ -11,13 +11,17 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
 
     public StandardBoard(){
         grid = new Cell[9][9];
-        blocks = createBlocks(9);
+        blocks = Util.createBlocks(9);
         cells = new ArrayList<Cell>(81);
         createCells();
     }
 
-    public void setIteration(Iteration order){
+    public void setIterationOrder(Iteration order){
         iteration = order;
+    }
+
+    public Cell getCell(int x, int y){
+        return grid[x][y];
     }
 
     public void createCells(){
@@ -32,24 +36,24 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
     }
 
     public boolean testConditions(Cell cell, int value){
-        return checkBlock(cell,value) && checkColumn(cell.getColumn(),value) && checkRow(cell.getRow(),value);
+        return testBlock(cell, value) && testColumn(cell.getColumn(), value) && testRow(cell.getRow(), value);
     }
 
-    private boolean checkRow(int row, int value){
+    private boolean testRow(int row, int value){
         for(Cell cell : grid[row]){
             if(value == cell.getValue()) return false;
         }
         return true;
     }
 
-    private boolean checkColumn(int column, int value){
+    private boolean testColumn(int column, int value){
         for(Cell[] cells : grid){
             if(value == cells[column].getValue()) return false;
         }
         return true;
     }
 
-    private boolean checkBlock(Cell testedCell, int value){
+    private boolean testBlock(Cell testedCell, int value){
         for(Cell cell : blocks.get(testedCell.getBlock())){
             if(cell.getValue() == value){
                 return false;
@@ -58,14 +62,6 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         return true;
     }
 
-    private <T> List<List<T>> createBlocks(int capacity){
-        List<List<T>> list = new ArrayList<List<T>>(capacity);
-        for(int i = 0; i < capacity; i++){
-            List<T> temp = new ArrayList<T>();
-            list.add(temp);
-        }
-        return list;
-    }
 
     public void updateAllCells(){
         for(Cell cell : this){
@@ -75,13 +71,19 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
 
     public void updateSingleCell(Cell cell){
         cell.clearMemory();
-        for(int i : Cell.randomOrderList()){
+        for(int i : Util.randomOrderDigits()){
             if(!testConditions(cell, i)){
                 cell.excludeValue(i);
             }
         }
     }
 
+    public void setCells(ArrayList<Cell> cells){
+        Iterator<Cell> cellIterator = cells.iterator();
+        for(Cell cell : this.cells){
+            cell.setValue(cellIterator.next().getValue());
+        }
+    }
 
     @Override
     public String toString(){
@@ -97,20 +99,23 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
 
     @Override
     public ListIterator<Cell> iterator() {
-        if(iteration.equals(Iteration.LINEAR)){
-            System.out.println("linear");
-            return linearOrderIterator();
-        }else if(iteration.equals(Iteration.RANDOM)){
-            System.out.println("random");
-            return randomOrderIterator();
-        }else if(iteration.equals(Iteration.S_SHAPE)){
-            System.out.println("s_shaped");
-            return sShapeOrderIterator();
-        }else if(iteration.equals(Iteration.CIRCULAR)){
-            System.out.println("circular");
-            return linkedIterator();
+        switch (iteration) {
+            case LINEAR:
+                System.out.println("linear");
+                return linearOrderIterator();
+            case RANDOM:
+                System.out.println("random");
+                return randomOrderIterator();
+            case S_SHAPE:
+                System.out.println("s_shaped");
+                return sShapeOrderIterator();
+            case CIRCULAR:
+                System.out.println("circular");
+                return linkedIterator();
+            default:
+                System.out.println("linear");
+                return linearOrderIterator();
         }
-        return linearOrderIterator();
     }
 
     public ListIterator<Cell> randomOrderIterator() {
@@ -124,19 +129,7 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
     }
 
     public ListIterator<Cell> sShapeOrderIterator(){
-        List<Cell> sShape = new ArrayList<Cell>();
-        List<Cell> temp;
-        for(int i = 0; i < 9; i++){
-            if((i+1)%2==0){
-                temp = new ArrayList<Cell>(Arrays.asList(grid[i]));
-                Collections.reverse(temp);
-                sShape.addAll(temp);
-            }else{
-                sShape.addAll(Arrays.asList(grid[i]));
-            }
-        }
-
-        return sShape.listIterator();
+        return Util.sShapedList(grid).listIterator();
     }
 
     public ListIterator<Cell> linkedIterator(){

@@ -6,14 +6,19 @@ public class Cell implements Iterable<Integer>{
     final private int row;
     final private int column;
     final private int block;
+    private int testValue;
     private int value;
+    private boolean isHidden;
+    private boolean isConfirmed;
     private List<Integer> availabilityList;
 
     public Cell(int row, int column){
         this.row = row;
         this.column = column;
-        availabilityList = randomOrderList();
-        block = specifyBlock(row,column);
+        availabilityList = Util.randomOrderDigits();
+        block = Util.specifyBlock(row, column);
+        isHidden = false;
+        isConfirmed = false;
     }
 
     public int getRow() {
@@ -24,12 +29,35 @@ public class Cell implements Iterable<Integer>{
         return column;
     }
 
+    public void hideValue(boolean state){
+        isHidden = state;
+    }
+
+    public boolean isHidden(){
+        return isHidden;
+    }
+
     public void setValue(int value){
-        this.value = value;
-        availabilityList.remove(Integer.valueOf(value));
+        if(isHidden){
+            testValue = value;
+        } else {
+            this.value = value;
+        }
+    }
+
+    public void confirm(boolean state){
+        isConfirmed = state;
+    }
+
+    public boolean isConfirmed(){
+        return isConfirmed;
     }
 
     public int getValue(){
+        return isHidden ? testValue : value;
+    }
+
+    public int getHiddenValue(){
         return value;
     }
 
@@ -72,32 +100,16 @@ public class Cell implements Iterable<Integer>{
 
     public void reset(){
         value = 0;
-        availabilityList = randomOrderList();
+        availabilityList = Util.randomOrderDigits();
     }
 
     public void clearMemory(){
-        availabilityList = randomOrderList();
-    }
-
-    private static int specifyBlock(int row, int column){
-        int x = row /3;
-        int y = column /3;
-        int modifier = row <3 ? 0 : row <6 ? 2 : 4;
-        return x+y+modifier;
-    }
-
-    public static List<Integer> randomOrderList(){
-        List<Integer> values = new ArrayList<Integer>();
-        for(int i = 1; i <= 9; i++){
-            values.add(i);
-        }
-        Collections.shuffle(values);
-        return values;
+        availabilityList = Util.randomOrderDigits();
     }
 
     @Override
     public String toString(){
-        return String.valueOf(value);
+        return String.valueOf(getValue());
     }
 
     @Override

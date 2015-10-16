@@ -17,21 +17,20 @@ public class Solver {
     }
 
     public boolean solve() {
-            if (current.getValue()!=0 || passValue(current)) {
-                if (iterator.hasNext()) {
-                    current = iterator.next();
-
-                    return solve();
-                } else {
-                    return true;
-                }
-            } else {
-                current.reset();
-                current = iterator.previous();
-                current.setValue(0);
+        if (current.getValue()!=0 || passValue(current)) {
+            if (iterator.hasNext()) {
+                current.hideValue(false);
+                current = iterator.next();
                 return solve();
+            } else {
+                return true;
             }
-
+        } else {
+            current.reset();
+            current = iterator.previous();
+            current.hideValue(true);
+            return solve();
+        }
     }
 
     private boolean passValue(Cell cell) {
