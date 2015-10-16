@@ -15,7 +15,7 @@ public class Creator {
         digHoles(board);
         System.out.println(board.toString());
         //tryOther(board);
-        System.out.println("tryother\n"+board.toString());
+        //System.out.println("tryother\n"+board.toString());
         board.setIterationOrder(Iteration.LINEAR);
         solver.setBoard(board).solve();
         System.out.println(board.toString());
@@ -74,7 +74,9 @@ public class Creator {
     }
 
     public static void main (String[] args) {
+        //for(int i = 0; i < 1000; i++) {
             Creator creator = new Creator();
             creator.create();
+        //}
     }
 }

@@ -17,7 +17,7 @@ public class Cell implements Iterable<Integer>{
         this.column = column;
         availabilityList = Util.randomOrderDigits();
         block = Util.specifyBlock(row, column);
-        isHidden = false;
+        isHidden = true;
         isConfirmed = false;
     }
 

@@ -10,26 +10,39 @@ public class Solver {
 
     public Solver setBoard(StandardBoard board){
         this.board = board;
-        iterator = board.iterator();
+        //iterator = board.iterator();
+        ArrayList<Cell> blank = new ArrayList<Cell>();
+        for(Cell cell : board){
+            if(cell.isHidden()){
+                blank.add(cell);
+            }
+        }
+        System.out.println(blank.size());
+        iterator = blank.listIterator();
         current = iterator.next();
+
         size = new ArrayList<Integer>(81);
         return this;
     }
 
     public boolean solve() {
-        if (current.getValue()!=0 || passValue(current)) {
+        if (passValue(current)) {
+            current.hideValue(false);
             if (iterator.hasNext()) {
-                current.hideValue(false);
                 current = iterator.next();
                 return solve();
             } else {
                 return true;
             }
         } else {
-            current.reset();
-            current = iterator.previous();
-            current.hideValue(true);
-            return solve();
+            if(iterator.hasPrevious()) {
+                current.reset();
+                current = iterator.previous();
+                current.hideValue(true);
+                return solve();
+            } else {
+                return false;
+            }
         }
     }
 
