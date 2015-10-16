@@ -78,6 +78,14 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         }
     }
 
+    public void updateBoard(){
+        for(Cell cell : this){
+            if(cell.isHidden()){
+                cell.setValue(0);
+            }
+        }
+    }
+
     public void setCells(ArrayList<Cell> cells){
         Iterator<Cell> cellIterator = cells.iterator();
         for(Cell cell : this.cells){
@@ -90,7 +98,7 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         String result = "";
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
-                result += grid[i][j].toString() + ",";
+                result += grid[i][j].toStringVal() + ",";
             }
             result += "\n";
         }

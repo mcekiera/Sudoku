@@ -1,7 +1,5 @@
 package Logic;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ListIterator;
 
 public class Creator {
@@ -12,12 +10,12 @@ public class Creator {
         Solver solver = new Solver();
         solver.setBoard(board).solve();
         System.out.println(board.toString());
-        digHoles(board);
+        //digHoles(board);
         System.out.println(board.toString());
-        //tryOther(board);
+        tryOther(board);
         //System.out.println("tryother\n"+board.toString());
         board.setIterationOrder(Iteration.LINEAR);
-        solver.setBoard(board).solve();
+        //solver.setBoard(board).solve();
         System.out.println(board.toString());
 
     }
@@ -33,34 +31,28 @@ public class Creator {
     }
 
     public void tryOther(StandardBoard board){
-        List<Cell> filled = new ArrayList<Cell>();
+        int counter = 0;
         for(Cell cell : board){
-
             if(!cell.isHidden()){
-                filled.add(cell);
-                System.out.println(cell.getAvailabilityList());
-            }
-        }
-        for(Cell cell : filled){
-            cell.hideValue(true);
-            for(int i : cell.getAvailabilityList()){
-                cell.setValue(i);
-                if(new Solver().setBoard(board).solve()){
-                    if(i != cell.getHiddenValue()){
-                        cell.hideValue(false);
-                        break;
+                //cell.hideValue(true);
+                for(int i = 0; i < 9; i++){
+                    board.updateBoard();
+                    cell.setValue(i);
+                    if(new Solver().setBoard(board).solve()) {
+                        counter++;
                     }
+                }
+                if(counter>1){
+                //    cell.hideValue(false);
                 }
             }
         }
     }
 
     public void testCellForErasure(Cell cell, StandardBoard board){
-        cell.hideValue(true);
         board.updateSingleCell(cell);
         if(cell.getAvailabilityList().size()>1) {
             cell.setValue(0);
-            cell.hideValue(false);
         }
     }
 

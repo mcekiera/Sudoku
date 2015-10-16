@@ -9,7 +9,6 @@ public class Cell implements Iterable<Integer>{
     private int testValue;
     private int value;
     private boolean isHidden;
-    private boolean isConfirmed;
     private List<Integer> availabilityList;
 
     public Cell(int row, int column){
@@ -18,7 +17,6 @@ public class Cell implements Iterable<Integer>{
         availabilityList = Util.randomOrderDigits();
         block = Util.specifyBlock(row, column);
         isHidden = true;
-        isConfirmed = false;
     }
 
     public int getRow() {
@@ -38,23 +36,13 @@ public class Cell implements Iterable<Integer>{
     }
 
     public void setValue(int value){
-        if(isHidden){
-            testValue = value;
-        } else {
+
             this.value = value;
-        }
-    }
 
-    public void confirm(boolean state){
-        isConfirmed = state;
-    }
-
-    public boolean isConfirmed(){
-        return isConfirmed;
     }
 
     public int getValue(){
-        return isHidden ? testValue : value;
+        return  value;
     }
 
     public int getHiddenValue(){
@@ -109,6 +97,10 @@ public class Cell implements Iterable<Integer>{
 
     @Override
     public String toString(){
+        return getRow() + "," + getColumn() + ": " + String.valueOf(getValue()) + " - " + getAvailabilityList();
+    }
+
+    public String toStringVal(){
         return String.valueOf(getValue());
     }
 
