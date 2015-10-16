@@ -23,7 +23,7 @@ public class Util {
         return sShape;
     }
 
-    static int specifyBlock(int row, int column){
+    public static int specifyBlock(int row, int column){
         int x = row /3;
         int y = column /3;
         int modifier = row <3 ? 0 : row <6 ? 2 : 4;
@@ -46,5 +46,16 @@ public class Util {
             list.add(temp);
         }
         return list;
+    }
+
+    public static ArrayList<Cell> getBlankCells(StandardBoard board){
+        ArrayList<Cell> blank = new ArrayList<Cell>();
+        for(Cell cell : board){
+            if(cell.getValue()==0){
+                blank.add(cell);
+            }
+        }
+        System.out.println(blank.size());
+        return blank;
     }
 }

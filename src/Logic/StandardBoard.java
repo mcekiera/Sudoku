@@ -16,12 +16,12 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         createCells();
     }
 
-    public void setIterationOrder(Iteration order){
-        iteration = order;
+    public List<Cell> getCells(){
+        return cells;
     }
 
-    public Cell getCell(int x, int y){
-        return grid[x][y];
+    public void setIterationOrder(Iteration order){
+        iteration = order;
     }
 
     public void createCells(){
@@ -62,7 +62,6 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         return true;
     }
 
-
     public void updateAllCells(){
         for(Cell cell : this){
             updateSingleCell(cell);
@@ -78,27 +77,12 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         }
     }
 
-    public void updateBoard(){
-        for(Cell cell : this){
-            if(cell.isHidden()){
-                cell.setValue(0);
-            }
-        }
-    }
-
-    public void setCells(ArrayList<Cell> cells){
-        Iterator<Cell> cellIterator = cells.iterator();
-        for(Cell cell : this.cells){
-            cell.setValue(cellIterator.next().getValue());
-        }
-    }
-
     @Override
     public String toString(){
         String result = "";
         for(int i = 0; i < 9; i++){
             for(int j = 0; j < 9; j++){
-                result += grid[i][j].toStringVal() + ",";
+                result += grid[i][j].toString() + ",";
             }
             result += "\n";
         }

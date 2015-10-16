@@ -1,21 +1,21 @@
 package Logic;
 
-import java.util.ListIterator;
-
 public class Creator {
+    Solver solver;
 
     public void create() {
         StandardBoard board = new StandardBoard();
 
-        Solver solver = new Solver();
-        solver.setBoard(board).solve();
+        solver = new Solver();
+        board.setIterationOrder(Iteration.LINEAR);
+        solver.solve(board);
         System.out.println(board.toString());
-        //digHoles(board);
+        board = digHoles(board);
+        //tryOtherCells(board);
         System.out.println(board.toString());
-        tryOther(board);
         //System.out.println("tryother\n"+board.toString());
         board.setIterationOrder(Iteration.LINEAR);
-        //solver.setBoard(board).solve();
+        solver.solve(board);
         System.out.println(board.toString());
 
     }
@@ -30,39 +30,33 @@ public class Creator {
         return board;
     }
 
-    public void tryOther(StandardBoard board){
-        int counter = 0;
+    public void testCellForErasure(Cell cell, StandardBoard board){
+        int temp = cell.getValue();
+        cell.setValue(0);
+        board.updateSingleCell(cell);
+        if(cell.availableValues().size()>1) {
+            cell.setValue(temp);
+        }
+    }
+
+    public void tryOtherCells(StandardBoard board){
+        int count = 0;
         for(Cell cell : board){
-            if(!cell.isHidden()){
-                //cell.hideValue(true);
+            System.out.println(cell);
+            if(cell.getValue()!=0){
+                cell.save();
                 for(int i = 0; i < 9; i++){
-                    board.updateBoard();
                     cell.setValue(i);
-                    if(new Solver().setBoard(board).solve()) {
-                        counter++;
+                    if(solver.solve(board)){
+                        count++;
+                        System.out.println(count);
                     }
                 }
-                if(counter>1){
-                //    cell.hideValue(false);
-                }
+
             }
         }
-    }
 
-    public void testCellForErasure(Cell cell, StandardBoard board){
-        board.updateSingleCell(cell);
-        if(cell.getAvailabilityList().size()>1) {
-            cell.setValue(0);
-        }
-    }
 
-    public StandardBoard copy(StandardBoard board){
-        StandardBoard copy = new StandardBoard();
-        ListIterator<Cell> cellListIterator = board.iterator();
-        for(Cell cell : copy){
-            cell.setValue(cellListIterator.next().getValue());
-        }
-        return copy;
     }
 
     public static void main (String[] args) {

@@ -6,17 +6,15 @@ public class Cell implements Iterable<Integer>{
     final private int row;
     final private int column;
     final private int block;
-    private int testValue;
     private int value;
-    private boolean isHidden;
-    private List<Integer> availabilityList;
+    private int saved;
+    private List<Integer> availableValues;
 
     public Cell(int row, int column){
         this.row = row;
         this.column = column;
-        availabilityList = Util.randomOrderDigits();
+        availableValues = Util.randomOrderDigits();
         block = Util.specifyBlock(row, column);
-        isHidden = true;
     }
 
     public int getRow() {
@@ -27,80 +25,47 @@ public class Cell implements Iterable<Integer>{
         return column;
     }
 
-    public void hideValue(boolean state){
-        isHidden = state;
-    }
-
-    public boolean isHidden(){
-        return isHidden;
-    }
-
     public void setValue(int value){
-
-            this.value = value;
-
+        this.value = value;
     }
 
     public int getValue(){
         return  value;
     }
 
-    public int getHiddenValue(){
-        return value;
-    }
-
     public int getBlock(){
         return block;
     }
 
-    public boolean passValue(int value){
-        return availabilityList.contains(Integer.valueOf(value));
-    }
-
     public boolean addRandom(){
-        if(availabilityList.isEmpty()){
+        if(availableValues.isEmpty()){
             return false;
         }else {
-            value = availabilityList.get(0);
-            availabilityList.remove(Integer.valueOf(value));
+            value = availableValues.get(0);
+            availableValues.remove(Integer.valueOf(value));
             return true;
         }
     }
 
-    public void presetValue(int value){
-        this.value = value;
-        availabilityList.clear();
-    }
-
     public void excludeValue(int value){
-        availabilityList.remove(Integer.valueOf(value));
+        availableValues.remove(Integer.valueOf(value));
     }
 
-    public ListIterator availabilityList(){
-        return availabilityList.listIterator();
+    public List<Integer> availableValues(){
+        return availableValues;
     }
-
-    public List<Integer> getAvailabilityList(){
-        return availabilityList;
-    }
-
-
 
     public void reset(){
         value = 0;
-        availabilityList = Util.randomOrderDigits();
+        availableValues = Util.randomOrderDigits();
     }
 
     public void clearMemory(){
-        availabilityList = Util.randomOrderDigits();
+        availableValues = Util.randomOrderDigits();
     }
 
     @Override
     public String toString(){
-        return getRow() + "," + getColumn() + ": " + String.valueOf(getValue()) + " - " + getAvailabilityList();
-    }
-
-    public String toStringVal(){
         return String.valueOf(getValue());
     }
 
@@ -121,6 +86,14 @@ public class Cell implements Iterable<Integer>{
 
     @Override
     public ListIterator<Integer> iterator() {
-        return availabilityList.listIterator();
+        return availableValues.listIterator();
+    }
+
+    public void save(){
+        saved = value;
+    }
+
+    public void load(){
+        value = saved;
     }
 }

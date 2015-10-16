@@ -8,66 +8,25 @@ public class Solver {
     private List<Integer> size;
     private Cell current;
 
-    public Solver setBoard(StandardBoard board){
+    public boolean solve(StandardBoard board){
         this.board = board;
-        //iterator = board.iterator();
-        ArrayList<Cell> blank = new ArrayList<Cell>();
-        board.setIterationOrder(Iteration.LINEAR);
-        for(Cell cell : board){
-            if(cell.getValue()==0){
-                blank.add(cell);
-            }
-        }
-        System.out.println(blank.size());
-        iterator = blank.listIterator();
-
-        size = new ArrayList<Integer>(81);
-        return this;
-    }
-
-    public boolean solvee() {
-        if (passValue(current)) {
-            //current.hideValue(false);
-            if (iterator.hasNext()) {
-                current = iterator.next();
-                return solve();
-            } else {
-                return true;
-            }
-        } else {
-            if(iterator.hasPrevious()) {
-                current.reset();
-                current = iterator.previous();
-                //current.hideValue(true);
-                return solve();
-            } else {
-                return false;
-            }
-        }
-    }
-
-    public boolean solve(){
+        iterator = Util.getBlankCells(board).listIterator();
         current = iterator.next();
-
-        while (iterator.hasNext()){
-            //System.out.println(board.toString());
-            System.out.println("In:" + current);
+        while (true){
             if (passValue(current)) {
+                if(!iterator.hasNext()){
+                    return true;
+                }
                 current = iterator.next();
-                //System.out.println("next: "+current);
             }else{
                 if(iterator.hasPrevious()) {
                     current.reset();
                     current = iterator.previous();
-                    //System.out.println("previous"+current);
                 }else {
                     return false;
                 }
             }
-
-
         }
-        return true;
     }
 
     private boolean passValue(Cell cell) {
@@ -80,11 +39,4 @@ public class Solver {
         return cell.addRandom();
     }
 
-    public static void main(String[] args) {
-        StandardBoard board = new StandardBoard();
-        Solver solver = new Solver();
-        solver.setBoard(board).solve();
-        board.updateAllCells();
-        System.out.println(board.toString());
-    }
 }
