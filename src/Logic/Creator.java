@@ -7,17 +7,32 @@ public class Creator {
 
     public void create() {
         StandardBoard board = new StandardBoard();
-
+        int i = 0;
+        int[] list = {0,9,0,4,7,0,0,3,0,
+                0,1,0,2,0,5,9,6,0,
+                0,5,3,0,0,9,0,2,4,
+                8,0,0,0,0,4,5,0,9,
+                9,4,0,5,0,1,3,0,0,
+                0,6,0,7,0,0,4,1,2,
+                0,0,9,1,8,2,6,4,0,
+                4,7,2,6,0,0,0,9,1,
+                1,0,6,9,0,7,2,5,0};
         solver = new Solver();
         board.setIterationOrder(Iteration.LINEAR);
-        solver.solve(board);
+        solver.setBoard(board);
+        solver.solve(board.getCells(),1);
         System.out.println(board.toString());
         board = digHoles(board);
         //tryOtherCells(board);
         System.out.println(board.toString());
         //System.out.println("tryother\n"+board.toString());
-        board.setIterationOrder(Iteration.LINEAR);
-        solver.solve(board);
+        //board.setIterationOrder(Iteration.LINEAR);
+        ///for(Cell cell : board){
+        //    cell.setValue(list[i++]);
+        //}
+        //solver.setBoard(board);
+        //solver.solve(Util.getBlankCells(board), 0);
+        //System.out.println(solver.getSolution());
         System.out.println(board.toString());
 
     }
@@ -53,7 +68,7 @@ public class Creator {
                 cell.save();
                 for(int i = 0; i < 9; i++){
                     cell.setValue(i);
-                    if(solver.solve(board)){
+                    if(solver.solve(board.getCells(),0)){
                         count++;
                         System.out.println(count);
                     }

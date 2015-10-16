@@ -27,6 +27,7 @@ public class Cell implements Iterable<Integer>{
 
     public void setValue(int value){
         this.value = value;
+       // availableValues.remove(Integer.valueOf(value));
     }
 
     public int getValue(){
@@ -66,7 +67,7 @@ public class Cell implements Iterable<Integer>{
 
     @Override
     public String toString(){
-        return getRow() + "," + getColumn() + ":" + String.valueOf(getValue());
+        return String.valueOf(getValue()); //getRow() + "," + getColumn() + ":" +
     }
 
     @Override

@@ -7,12 +7,14 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
     final private Cell[][] grid;
     final private List<List<Cell>> blocks;
     final private List<Cell> cells;
+    private List<Integer> save;
     private Iteration iteration = Iteration.LINEAR;
 
     public StandardBoard(){
         grid = new Cell[9][9];
         blocks = Util.createBlocks(9);
         cells = new ArrayList<Cell>(81);
+        save = new ArrayList<Integer>(81);
         createCells();
     }
 
@@ -127,5 +129,18 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
     public ListIterator<Cell> linkedIterator(){
         List<Cell> linked = new LinkedList<Cell>(cells);
         return linked.listIterator();
+    }
+
+    public void save(){
+        for(Cell cell : this){
+            save.add(cell.getValue());
+        }
+    }
+
+    public void load(){
+        int i = 0;
+        for(Cell cell : this){
+            cell.setValue(save.get(i++));
+        }
     }
 }
