@@ -1,5 +1,7 @@
 package Logic;
 
+import java.util.ArrayList;
+
 public class Creator {
     Solver solver;
 
@@ -40,6 +42,10 @@ public class Creator {
     }
 
     public void tryOtherCells(StandardBoard board){
+        ArrayList<Integer> values = new ArrayList<Integer>();
+        for(Cell cell : board){
+            values.add(cell.getValue());
+        }
         int count = 0;
         for(Cell cell : board){
             System.out.println(cell);
@@ -50,6 +56,12 @@ public class Creator {
                     if(solver.solve(board)){
                         count++;
                         System.out.println(count);
+                    }
+                    int k = 0;
+                    for(Cell cellx : board){
+                        cellx.setValue(values.get(k));
+                        k++;
+
                     }
                 }
 

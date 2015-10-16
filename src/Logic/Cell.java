@@ -66,7 +66,7 @@ public class Cell implements Iterable<Integer>{
 
     @Override
     public String toString(){
-        return String.valueOf(getValue());
+        return getRow() + "," + getColumn() + ":" + String.valueOf(getValue());
     }
 
     @Override
