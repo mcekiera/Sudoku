@@ -7,6 +7,7 @@ public class Cell implements Iterable<Integer>{
     final private int column;
     final private int block;
     private int value;
+    private int save;
     private List<Integer> availableValues;
 
     public Cell(int row, int column){
@@ -36,16 +37,6 @@ public class Cell implements Iterable<Integer>{
         return block;
     }
 
-    public boolean addRandom(){
-        if(availableValues.isEmpty()){
-            return false;
-        }else {
-            value = availableValues.get(0);
-            availableValues.remove(Integer.valueOf(value));
-            return true;
-        }
-    }
-
     public void excludeValue(int value){
         availableValues.remove(Integer.valueOf(value));
     }
@@ -57,6 +48,14 @@ public class Cell implements Iterable<Integer>{
     public void reset(){
         value = 0;
         availableValues = Util.randomOrderDigits();
+    }
+
+    public void save(){
+        save = value;
+    }
+
+    public void load(){
+        value = save;
     }
 
     public void clearMemory(){

@@ -7,17 +7,20 @@ public class Solver {
     private List<Integer> solution;
     private int count = 0;
     int index = 0;
+    int trial = 0;
 
     public Solver setBoard(StandardBoard board){
         this.board = board;
         count = 0;
         index = 0;
+        trial = 0;
         return this;
     }
 
     public int solve(List<Cell> cells, int limit){
         if(index < cells.size()){
             for(int i : Util.randomOrderDigits()){
+                trial += 1;
                 if(passValue(cells.get(index),i)){
                     index += 1;
                     if(solve(cells, limit)>= limit){
@@ -35,6 +38,10 @@ public class Solver {
         cells.get(index).reset();
         index -= 1;
         return count;
+    }
+
+    public int getTrialsNumber(){
+        return trial;
     }
 
     public int finish(List<Cell> cells){

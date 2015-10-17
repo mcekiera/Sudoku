@@ -97,37 +97,41 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
             case S_SHAPE:
                 System.out.println("SB s_shaped");
                 return sShapeOrderIterator();
+            case EVERY_SECOND:
+                System.out.println("SB every_second");
+                return everySecondIterator();
             default:
                 System.out.println("SB linear");
                 return linearOrderIterator();
         }
     }
 
-    public ListIterator<Cell> randomOrderIterator() {
+    private ListIterator<Cell> randomOrderIterator() {
         ArrayList<Cell> randomOrder = new ArrayList<Cell>(cells);
         Collections.shuffle(randomOrder);
         return randomOrder.listIterator();
     }
 
-    public ListIterator<Cell> linearOrderIterator() {
+    private ListIterator<Cell> everySecondIterator() { return Util.jumpOneCell(cells).listIterator(); }
+
+    private ListIterator<Cell> linearOrderIterator() {
         return cells.listIterator();
     }
 
-    public ListIterator<Cell> sShapeOrderIterator(){
+    private ListIterator<Cell> sShapeOrderIterator(){
         return Util.sShapedList(grid).listIterator();
     }
 
     public void save(){
         save.clear();
         for(Cell cell : this){
-            save.add(cell.getValue());
+            cell.save();
         }
     }
 
     public StandardBoard load(){
-        int i = 0;
         for(Cell cell : this){
-            cell.setValue(save.get(i++));
+            cell.load();
         }
         return this;
     }

@@ -1,5 +1,7 @@
 package Logic;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ListIterator;
 
 public class Creator {
@@ -35,7 +37,7 @@ public class Creator {
         //board = digHoles(board);
         //board.save();
 
-        holes(board);
+        holes(board,40, Iteration.EVERY_SECOND);
         //System.out.println("HOLES:\n" + board.toString());
         //Util.getBlankCells(board);
         //tryOtherCells(board);
@@ -45,10 +47,15 @@ public class Creator {
         //for(Cell cell : board){
         //    cell.setValue(list[i++]);
         //}
-        solver.setBoard(board);
-        solver.solve(Util.getBlankCells(board), 10);
-        //System.out.println(solver.getSolution());
         System.out.println(board.toString());
+        solver.setBoard(board);
+        System.out.println("T: " + solver.getTrialsNumber());
+        solver.solve(Util.getBlankCells(board), 1);
+
+        System.out.println("T2: " + solver.getTrialsNumber());
+        System.out.println(board.toString());
+        System.out.println(board.getCells());
+        System.out.println(Util.jumpOneCell(board.getCells()));
 
     }
 
@@ -87,24 +94,26 @@ public class Creator {
         //}
     }
 
-    public void holes(StandardBoard board){
-        board.setIterationOrder(Iteration.LINEAR);
+    public void holes(StandardBoard board, int limit, Iteration iteration){
+        board.setIterationOrder(iteration);
         ListIterator<Cell> iterator = board.iterator();
+        List<Cell> blanks = new ArrayList<Cell>();
         Cell current = iterator.next();
         board.save();
-        int temp = 0;
         while (iterator.hasNext()){
-            temp = current.getValue();
+            current.save();
             if (current.getValue()!=0){
                 current.setValue(0);
             }
             solver.setBoard(board);
-            if (solver.solve(Util.getBlankCells(board),2) != 1) {
+            blanks = Util.getBlankCells(board);
+            if(blanks.size() >= limit) {
+                break;
+            }
+            if (solver.solve(blanks,2) != 1) {
                 board.load();
             }else{
-                board.load();
-                current.setValue(0);
-                board.save();
+                current.save();
             }
             current = iterator.next();
         }
