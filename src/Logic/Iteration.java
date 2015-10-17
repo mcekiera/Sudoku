@@ -1,5 +1,5 @@
 package Logic;
 
 public enum Iteration {
-    LINEAR, RANDOM, S_SHAPE, EVERY_SECOND;
+    LINEAR, RANDOM, S_SHAPE;
 }

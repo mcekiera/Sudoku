@@ -12,7 +12,6 @@ public enum Level {
 
     private final int min;
     private final int max;
-    private int blankCells;
     private final Iteration iterationType;
 
     Level(int min, int max, Iteration iterationType){

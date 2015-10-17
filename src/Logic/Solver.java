@@ -29,7 +29,7 @@ public class Solver {
             }
             return backtrace(cells);
         } else {
-            return finish(cells);
+            return finish();
         }
     }
 
@@ -39,7 +39,7 @@ public class Solver {
         return count;
     }
 
-    public int finish(List<Cell> cells){
+    public int finish(){
         count++;
         index -= 1;
         return count;

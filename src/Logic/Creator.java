@@ -15,9 +15,9 @@ public class Creator {
         board = new StandardBoard();
         getFullBoard();
         if(level.equals(Level.MODERATE) || level.equals(Level.HARD)){
-            holes(board, 30, Iteration.RANDOM);
+            generateBlankCells(30, Iteration.RANDOM);
         }
-        holes(board, level.getBlankCellsNumber(), level.getIterationType());
+        generateBlankCells(level.getBlankCellsNumber(), level.getIterationType());
         board.save();
         return board;
     }
@@ -26,15 +26,17 @@ public class Creator {
         solver.setBoard(board).solve(board.getCells(), 1);
     }
 
-    public void holes(StandardBoard board, int limit, Iteration iteration){
+    public void generateBlankCells(int limit, Iteration iteration){
         List<Cell> blanks;
         board.setIterationOrder(iteration);
         ListIterator<Cell> iterator = board.iterator();
-        Cell current = iterator.next();
+        Cell current;
         board.save();
+
         while (iterator.hasNext()){
+            current = iterator.next();
             current.save();
-            if (current.getValue()!=0){
+            if (current.isBlank()){
                 current.setValue(0);
             }
             solver.setBoard(board);
@@ -47,7 +49,6 @@ public class Creator {
             }else{
                 current.save();
             }
-            current = iterator.next();
         }
         board.setIterationOrder(Iteration.LINEAR);
     }
@@ -55,9 +56,7 @@ public class Creator {
 
 
     public static void main (String[] args) {
-        //for(int i = 0; i < 1000; i++) {
         Creator creator = new Creator();
-        System.out.println(creator.create(Level.VERY_HARD));
-        //}
+        System.out.println(creator.create(Level.MODERATE));
     }
 }

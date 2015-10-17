@@ -37,12 +37,8 @@ public class Cell implements Iterable<Integer>{
         return block;
     }
 
-    public void excludeValue(int value){
-        availableValues.remove(Integer.valueOf(value));
-    }
-
-    public List<Integer> availableValues(){
-        return availableValues;
+    public boolean isBlank(){
+        return value==0;
     }
 
     public void reset(){
@@ -56,10 +52,6 @@ public class Cell implements Iterable<Integer>{
 
     public void load(){
         value = save;
-    }
-
-    public void clearMemory(){
-        availableValues = Util.randomOrderDigits();
     }
 
     @Override
