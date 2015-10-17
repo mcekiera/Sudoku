@@ -6,9 +6,9 @@ public enum Level {
 
     VERY_EASY(0,30,Iteration.RANDOM),
     EASY(31,44,Iteration.RANDOM),
-    MODERATE(45,49,Iteration.EVERY_SECOND),
+    MODERATE(45,49,Iteration.S_SHAPE),
     HARD(40,54,Iteration.S_SHAPE),
-    VARY_HARD(55,61,Iteration.LINEAR);
+    VERY_HARD(55,61,Iteration.LINEAR);
 
     private final int min;
     private final int max;
@@ -21,7 +21,7 @@ public enum Level {
         this.iterationType = iterationType;
     }
 
-    public int getBlankCells(){
+    public int getBlankCellsNumber(){
         return new Random().nextInt((max - min) + 1) + min;
     }
 

@@ -4,7 +4,6 @@ import java.util.*;
 
 public class Solver {
     private StandardBoard board;
-    private List<Integer> solution;
     private int count = 0;
     int index = 0;
     int trial = 0;
@@ -40,24 +39,13 @@ public class Solver {
         return count;
     }
 
-    public int getTrialsNumber(){
-        return trial;
-    }
-
     public int finish(List<Cell> cells){
         count++;
         index -= 1;
-        solution = collectSolution(cells);
-        //System.out.println(board.toString());
-        //System.out.println(count);
         return count;
     }
 
-    public List<Integer> getSolution(){
-        return solution;
-    }
-
-    private List<Integer> collectSolution(List<Cell> cells){
+    private List<Integer> getSolution(List<Cell> cells){
         List<Integer> integers = new ArrayList<Integer>();
         for(Cell cell : cells){
             integers.add(cell.getValue());

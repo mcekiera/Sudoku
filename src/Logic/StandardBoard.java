@@ -64,12 +64,49 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         return true;
     }
 
-    public void updateSingleCell(Cell cell){
-        cell.clearMemory();
-        for(int i : Util.randomOrderDigits()){
-            if(!testConditions(cell, i)){
-                cell.excludeValue(i);
-            }
+    public void save(){
+        for(Cell cell : this){
+            cell.save();
+        }
+    }
+
+    public StandardBoard load(){
+        for(Cell cell : this){
+            cell.load();
+        }
+        return this;
+    }
+
+
+    private ListIterator<Cell> randomOrderIterator() {
+        ArrayList<Cell> randomOrder = new ArrayList<Cell>(cells);
+        Collections.shuffle(randomOrder);
+        return randomOrder.listIterator();
+    }
+
+    private ListIterator<Cell> linearOrderIterator() {
+        return cells.listIterator();
+    }
+
+    private ListIterator<Cell> sShapeOrderIterator(){
+        return Util.sShapedList(grid).listIterator();
+    }
+
+    @Override
+    public ListIterator<Cell> iterator() {
+        switch (iteration) {
+            case LINEAR:
+                System.out.println("SB linear");
+                return linearOrderIterator();
+            case RANDOM:
+                System.out.println("SB random");
+                return randomOrderIterator();
+            case S_SHAPE:
+                System.out.println("SB s_shaped");
+                return sShapeOrderIterator();
+            default:
+                System.out.println("SB linear");
+                return linearOrderIterator();
         }
     }
 
@@ -85,54 +122,4 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         return result;
     }
 
-    @Override
-    public ListIterator<Cell> iterator() {
-        switch (iteration) {
-            case LINEAR:
-                System.out.println("SB linear");
-                return linearOrderIterator();
-            case RANDOM:
-                System.out.println("SB random");
-                return randomOrderIterator();
-            case S_SHAPE:
-                System.out.println("SB s_shaped");
-                return sShapeOrderIterator();
-            case EVERY_SECOND:
-                System.out.println("SB every_second");
-                return everySecondIterator();
-            default:
-                System.out.println("SB linear");
-                return linearOrderIterator();
-        }
-    }
-
-    private ListIterator<Cell> randomOrderIterator() {
-        ArrayList<Cell> randomOrder = new ArrayList<Cell>(cells);
-        Collections.shuffle(randomOrder);
-        return randomOrder.listIterator();
-    }
-
-    private ListIterator<Cell> everySecondIterator() { return Util.jumpOneCell(cells).listIterator(); }
-
-    private ListIterator<Cell> linearOrderIterator() {
-        return cells.listIterator();
-    }
-
-    private ListIterator<Cell> sShapeOrderIterator(){
-        return Util.sShapedList(grid).listIterator();
-    }
-
-    public void save(){
-        save.clear();
-        for(Cell cell : this){
-            cell.save();
-        }
-    }
-
-    public StandardBoard load(){
-        for(Cell cell : this){
-            cell.load();
-        }
-        return this;
-    }
 }

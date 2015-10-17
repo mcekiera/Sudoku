@@ -23,20 +23,6 @@ public class Util {
         return sShape;
     }
 
-    public static <T> List<T> jumpOneCell(List<T> list){
-        List<T> result = new ArrayList<T>(list.size());
-        for (int i = 0, j = 0; i <= list.size(); i += 2, j++) {
-            if(j == list.size()-2){
-                break;
-            }
-            if(i == list.size()-1){
-                i = 1;
-            }
-            result.add(list.get(i));
-        }
-        return result;
-    }
-
     public static int specifyBlock(int row, int column){
         int x = row /3;
         int y = column /3;
