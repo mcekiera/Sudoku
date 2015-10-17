@@ -7,7 +7,6 @@ public class Cell implements Iterable<Integer>{
     final private int column;
     final private int block;
     private int value;
-    private int saved;
     private List<Integer> availableValues;
 
     public Cell(int row, int column){
@@ -27,7 +26,6 @@ public class Cell implements Iterable<Integer>{
 
     public void setValue(int value){
         this.value = value;
-       // availableValues.remove(Integer.valueOf(value));
     }
 
     public int getValue(){
@@ -67,7 +65,7 @@ public class Cell implements Iterable<Integer>{
 
     @Override
     public String toString(){
-        return String.valueOf(getValue()); //getRow() + "," + getColumn() + ":" +
+        return String.valueOf(getValue());
     }
 
     @Override
@@ -75,11 +73,7 @@ public class Cell implements Iterable<Integer>{
         if(obj == null){
             return false;
         }else if(obj.getClass() == this.getClass()){
-            if(((Cell)obj).getValue() == this.getValue() && ((Cell)obj).getRow() == this.getRow() && ((Cell)obj).getColumn() == this.getColumn()){
-                return true;
-            }else{
-                return false;
-            }
+            return ((Cell) obj).getValue() == this.getValue() && ((Cell) obj).getRow() == this.getRow() && ((Cell) obj).getColumn() == this.getColumn();
         }else{
             return false;
         }
@@ -88,13 +82,5 @@ public class Cell implements Iterable<Integer>{
     @Override
     public ListIterator<Integer> iterator() {
         return availableValues.listIterator();
-    }
-
-    public void save(){
-        saved = value;
-    }
-
-    public void load(){
-        value = saved;
     }
 }

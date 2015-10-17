@@ -64,12 +64,6 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         return true;
     }
 
-    public void updateAllCells(){
-        for(Cell cell : this){
-            updateSingleCell(cell);
-        }
-    }
-
     public void updateSingleCell(Cell cell){
         cell.clearMemory();
         for(int i : Util.randomOrderDigits()){
@@ -95,19 +89,16 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
     public ListIterator<Cell> iterator() {
         switch (iteration) {
             case LINEAR:
-                System.out.println("linear");
+                System.out.println("SB linear");
                 return linearOrderIterator();
             case RANDOM:
-                System.out.println("random");
+                System.out.println("SB random");
                 return randomOrderIterator();
             case S_SHAPE:
-                System.out.println("s_shaped");
+                System.out.println("SB s_shaped");
                 return sShapeOrderIterator();
-            case CIRCULAR:
-                System.out.println("circular");
-                return linkedIterator();
             default:
-                System.out.println("linear");
+                System.out.println("SB linear");
                 return linearOrderIterator();
         }
     }
@@ -126,21 +117,18 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         return Util.sShapedList(grid).listIterator();
     }
 
-    public ListIterator<Cell> linkedIterator(){
-        List<Cell> linked = new LinkedList<Cell>(cells);
-        return linked.listIterator();
-    }
-
     public void save(){
+        save.clear();
         for(Cell cell : this){
             save.add(cell.getValue());
         }
     }
 
-    public void load(){
+    public StandardBoard load(){
         int i = 0;
         for(Cell cell : this){
             cell.setValue(save.get(i++));
         }
+        return this;
     }
 }

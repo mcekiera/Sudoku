@@ -8,10 +8,11 @@ public class Solver {
     private int count = 0;
     int index = 0;
 
-    public void setBoard(StandardBoard board){
+    public Solver setBoard(StandardBoard board){
         this.board = board;
         count = 0;
         index = 0;
+        return this;
     }
 
     public int solve(List<Cell> cells, int limit){
@@ -33,8 +34,6 @@ public class Solver {
     public int backtrace(List<Cell> cells){
         cells.get(index).reset();
         index -= 1;
-        System.out.println(board.toString());
-        System.out.println(count);
         return count;
     }
 
@@ -42,7 +41,8 @@ public class Solver {
         count++;
         index -= 1;
         solution = collectSolution(cells);
-        System.out.println("up " + count);
+        //System.out.println(board.toString());
+        //System.out.println(count);
         return count;
     }
 

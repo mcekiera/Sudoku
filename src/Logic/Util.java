@@ -55,7 +55,7 @@ public class Util {
                 blank.add(cell);
             }
         }
-        System.out.println(blank.size());
+        System.out.println("Utils BLANKS: "+blank.size());
         return blank;
     }
 }

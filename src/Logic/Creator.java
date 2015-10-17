@@ -1,6 +1,6 @@
 package Logic;
 
-import java.util.ArrayList;
+import java.util.ListIterator;
 
 public class Creator {
     Solver solver;
@@ -29,18 +29,24 @@ public class Creator {
         solver = new Solver();
         board.setIterationOrder(Iteration.LINEAR);
         solver.setBoard(board);
-        solver.solve(board.getCells(),1);
+        solver.solve(board.getCells(), 1);
         System.out.println(board.toString());
+
         //board = digHoles(board);
+        //board.save();
+
+        holes(board);
+        //System.out.println("HOLES:\n" + board.toString());
+        //Util.getBlankCells(board);
         //tryOtherCells(board);
-        System.out.println(board.toString());
+        //System.out.println(board.toString());
         //System.out.println("tryother\n"+board.toString());
         //board.setIterationOrder(Iteration.LINEAR);
         //for(Cell cell : board){
         //    cell.setValue(list[i++]);
         //}
         solver.setBoard(board);
-        solver.solve(Util.getBlankCells(board), 1);
+        solver.solve(Util.getBlankCells(board), 10);
         //System.out.println(solver.getSolution());
         System.out.println(board.toString());
 
@@ -65,31 +71,13 @@ public class Creator {
         }
     }
 
-    public void tryOtherCells(StandardBoard board){
-        ArrayList<Integer> values = new ArrayList<Integer>();
-        for(Cell cell : board){
-            values.add(cell.getValue());
+    public StandardBoard copy(StandardBoard board){
+        StandardBoard copy = new StandardBoard();
+        ListIterator<Cell> cellListIterator = board.iterator();
+        for(Cell cell : copy){
+            cell.setValue(cellListIterator.next().getValue());
         }
-        int count = 0;
-        for(Cell cell : board){
-            System.out.println(cell);
-            if(cell.getValue()!=0){
-                cell.save();
-                for(int i = 0; i < 9; i++){
-                    cell.setValue(i);
-                    if(solver.solve(board.getCells(),0)>0){
-                        count++;
-                        System.out.println(count);
-                    }
-                    int k = 0;
-                    for(Cell cellx : board){
-                        cellx.setValue(values.get(k));
-                        k++;
-
-                    }
-                }
-            }
-        }
+        return copy;
     }
 
     public static void main (String[] args) {
@@ -97,5 +85,28 @@ public class Creator {
             Creator creator = new Creator();
             creator.create();
         //}
+    }
+
+    public void holes(StandardBoard board){
+        board.setIterationOrder(Iteration.LINEAR);
+        ListIterator<Cell> iterator = board.iterator();
+        Cell current = iterator.next();
+        board.save();
+        int temp = 0;
+        while (iterator.hasNext()){
+            temp = current.getValue();
+            if (current.getValue()!=0){
+                current.setValue(0);
+            }
+            solver.setBoard(board);
+            if (solver.solve(Util.getBlankCells(board),2) != 1) {
+                board.load();
+            }else{
+                board.load();
+                current.setValue(0);
+                board.save();
+            }
+            current = iterator.next();
+        }
     }
 }
