@@ -48,7 +48,7 @@ public class Util {
         return x+y+modifier;
     }
 
-    public static ArrayList<Cell> getBlankCells(StandardBoard board) {
+    public static ArrayList<Cell> getBlankCells(Board board) {
         ArrayList<Cell> blank = new ArrayList<Cell>();
         for(Cell cell : board) {
             if(cell.isBlank()) {

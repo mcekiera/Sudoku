@@ -5,18 +5,18 @@ import java.util.ListIterator;
 
 public class Creator {
     Solver solver;
-    StandardBoard board;
+    Board board;
+    List<Cell> blankCells;
+    Cell current;
 
     public Creator(){
         solver = new Solver();
     }
 
-    public StandardBoard create(Level level) {
-        board = new StandardBoard();
+    public Board create(Level level) {
+        board = new Board();
         getFullBoard();
-        if(level.equals(Level.MODERATE) || level.equals(Level.HARD)){
-            generateBlankCells(30, Iteration.RANDOM);
-        }
+        randomizeBlankCellPositions(level);
         generateBlankCells(level.getBlankCellsNumber(), level.getIterationType());
         board.save();
         return board;
@@ -26,25 +26,34 @@ public class Creator {
         solver.setBoard(board).solve(board.getCells(), 1);
     }
 
+    private void randomizeBlankCellPositions(Level level){
+        if(level.equals(Level.MODERATE) || level.equals(Level.HARD)){
+            generateBlankCells(30, Iteration.RANDOM);
+        }
+    }
+
     public void generateBlankCells(int limit, Iteration iteration){
-        List<Cell> blanks;
         board.setIterationOrder(iteration);
         ListIterator<Cell> iterator = board.iterator();
-        Cell current;
         board.save();
 
         while (iterator.hasNext()){
             current = iterator.next();
             current.save();
-            if (current.isBlank()){
+
+            if (!current.isBlank()){
                 current.setValue(0);
+            }else{
+                continue;
             }
+
             solver.setBoard(board);
-            blanks = Util.getBlankCells(board);
-            if(blanks.size() >= limit) {
+            blankCells = Util.getBlankCells(board);
+            if(isOutOfLimits(limit)) {
                 break;
             }
-            if (solver.solve(blanks,5) != 1) {
+
+            if (hasMoreThanOneSolution(blankCells)) {
                 board.load();
             }else{
                 current.save();
@@ -53,10 +62,16 @@ public class Creator {
         board.setIterationOrder(Iteration.LINEAR);
     }
 
+    public boolean isOutOfLimits(int limit){
+        return blankCells.size() >= limit;
+    }
 
+    private boolean hasMoreThanOneSolution(List<Cell> blanks) {
+        return solver.solve(blanks,3) != 1;
+    }
 
     public static void main (String[] args) {
         Creator creator = new Creator();
-        System.out.println(creator.create(Level.MODERATE));
+        System.out.println(creator.create(Level.VERY_EASY));
     }
 }

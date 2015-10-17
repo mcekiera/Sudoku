@@ -4,7 +4,7 @@ import java.util.Random;
 
 public enum Level {
 
-    VERY_EASY(0,30,Iteration.RANDOM),
+    VERY_EASY(28,30,Iteration.RANDOM),
     EASY(31,44,Iteration.RANDOM),
     MODERATE(45,49,Iteration.S_SHAPE),
     HARD(40,54,Iteration.S_SHAPE),

@@ -2,14 +2,14 @@ package Logic;
 
 import java.util.*;
 
-public class StandardBoard implements Iterable<Cell>, Cloneable{
+public class Board implements Iterable<Cell>, Cloneable{
 
     final private Cell[][] grid;
     final private List<List<Cell>> blocks;
     final private List<Cell> cells;
     private Iteration iteration = Iteration.LINEAR;
 
-    public StandardBoard(){
+    public Board(){
         grid = new Cell[9][9];
         blocks = Util.createBlocks(9);
         cells = new ArrayList<Cell>(81);
@@ -68,11 +68,10 @@ public class StandardBoard implements Iterable<Cell>, Cloneable{
         }
     }
 
-    public StandardBoard load() {
+    public void load() {
         for (Cell cell : this) {
             cell.load();
         }
-        return this;
     }
 
     private ListIterator<Cell> randomOrderIterator() {
