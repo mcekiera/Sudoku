@@ -1,20 +1,32 @@
 package Logic;
 
+import java.util.Random;
+
 public enum Level {
 
-    VERY_EASY(30,Iteration.RANDOM),
-    EASY(45,Iteration.RANDOM),
-    MODERATE(49,Iteration.RANDOM),
-    HARD(54,Iteration.S_SHAPE),
-    VARY_HARD(61,Iteration.LINEAR);
+    VERY_EASY(0,30,Iteration.RANDOM),
+    EASY(31,44,Iteration.RANDOM),
+    MODERATE(45,49,Iteration.EVERY_SECOND),
+    HARD(40,54,Iteration.S_SHAPE),
+    VARY_HARD(55,61,Iteration.LINEAR);
 
-    private final int blankCells;
+    private final int min;
+    private final int max;
+    private int blankCells;
     private final Iteration iterationType;
 
-    Level(int blankCells, Iteration iterationType){
-        this.blankCells = blankCells;
+    Level(int min, int max, Iteration iterationType){
+        this.min = min;
+        this.max = max;
         this.iterationType = iterationType;
+    }
 
+    public int getBlankCells(){
+        return new Random().nextInt((max - min) + 1) + min;
+    }
+
+    public Iteration getIterationType(){
+        return iterationType;
     }
 
 

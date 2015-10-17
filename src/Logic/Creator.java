@@ -36,8 +36,8 @@ public class Creator {
 
         //board = digHoles(board);
         //board.save();
-
-        holes(board,40, Iteration.EVERY_SECOND);
+        //holes(board,20, Iteration.RANDOM);
+        holes(board,49, Iteration.EVERY_SECOND);
         //System.out.println("HOLES:\n" + board.toString());
         //Util.getBlankCells(board);
         //tryOtherCells(board);
@@ -54,8 +54,6 @@ public class Creator {
 
         System.out.println("T2: " + solver.getTrialsNumber());
         System.out.println(board.toString());
-        System.out.println(board.getCells());
-        System.out.println(Util.jumpOneCell(board.getCells()));
 
     }
 
