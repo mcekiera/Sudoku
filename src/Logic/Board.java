@@ -20,6 +20,8 @@ public class Board implements Iterable<Cell>, Cloneable{
         return cells;
     }
 
+    public List<List<Cell>> getBlocks() { return blocks; }
+
     public void setIterationOrder(Iteration order){
         iteration = order;
     }
