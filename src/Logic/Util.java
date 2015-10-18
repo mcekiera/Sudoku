@@ -7,7 +7,6 @@ import java.util.List;
 
 public class Util {
 
-
     public static <T> List<T> s_ShapedList(T[][] grid) {
         List<T> sShape = new ArrayList<T>();
         List<T> temp;

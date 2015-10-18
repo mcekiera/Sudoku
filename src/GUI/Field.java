@@ -11,11 +11,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
 
-public class Field extends JPanel{
+public class Field extends JPanel {
     JFormattedTextField textField;
     Cell cell;
 
-    public Field (Cell cell){
+    public Field (Cell cell) {
         textField = getFormattedTextField("*");
         textField.setHorizontalAlignment(JTextField.CENTER);
         textField.setBorder(new EmptyBorder(0,0,0,0));
@@ -26,14 +26,15 @@ public class Field extends JPanel{
         createField();
     }
 
-    public int readValue(){
+    public int readValue() {
         return cell.isBlank() ? 0 : Integer.parseInt(textField.getText());
     }
 
-    private void createField(){
-        if(!cell.isBlank()){
+    private void createField() {
+        if(!cell.isBlank()) {
             textField.setText(String.valueOf(cell.getValue()));
             textField.setEditable(false);
+
         } else {
             add(sideHelper(), BorderLayout.EAST);
         }
@@ -41,7 +42,7 @@ public class Field extends JPanel{
         setBorder(new EtchedBorder(EtchedBorder.RAISED));
     }
 
-    private JFormattedTextField getFormattedTextField(String format){
+    private JFormattedTextField getFormattedTextField(String format) {
         final JFormattedTextField field = new JFormattedTextField(getMaskFormatter(format));
         field.addMouseListener(new MouseAdapter() {
             @Override
@@ -53,22 +54,22 @@ public class Field extends JPanel{
         return field;
     }
 
-    private MaskFormatter getMaskFormatter(String format){
+    private MaskFormatter getMaskFormatter(String format) {
         MaskFormatter mask = null;
         try {
             mask = new MaskFormatter(format);
             mask.setValidCharacters(" 123456789");
-        }catch (ParseException ex){
+        }catch (ParseException ex) {
             ex.printStackTrace();
         }
         return mask;
     }
 
-    private JPanel sideHelper(){
+    private JPanel sideHelper() {
         textField.setLayout(new GridLayout(4,4));
         JPanel panel = new JPanel(new GridLayout(3,1));
         int[] x = {0,3,4,7,8,11,12,15};
-        for(int i = 0; i < 16; i++){
+        for(int i = 0; i < 16; i++) {
             if(i == 0 || i == 3|| i == 4|| i == 7|| i == 8|| i == 11|| i == 12|| i == 15) {
                 JFormattedTextField field = getFormattedTextField("*");
 

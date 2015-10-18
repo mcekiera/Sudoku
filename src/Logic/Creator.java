@@ -4,12 +4,12 @@ import java.util.List;
 import java.util.ListIterator;
 
 public class Creator {
-    Solver solver;
-    Board board;
-    List<Cell> blankCells;
-    Cell current;
+    private Solver solver;
+    private Board board;
+    private List<Cell> blankCells;
+    private int limit;
 
-    public Creator(){
+    public Creator() {
         solver = new Solver();
     }
 
@@ -22,28 +22,33 @@ public class Creator {
         return board;
     }
 
-    private void getFullBoard(){
+    public int getLimit() {
+        return limit;
+    }
+
+    private void getFullBoard() {
         solver.setBoard(board).solve(board.getCells(), 1);
     }
 
-    private void randomizeBlankCellPositions(Level level){
-        if(level.equals(Level.MODERATE) || level.equals(Level.HARD)){
+    private void randomizeBlankCellPositions(Level level) {
+        if(level.equals(Level.MODERATE) || level.equals(Level.HARD)) {
             generateBlankCells(30, Iteration.RANDOM);
         }
     }
 
-    public void generateBlankCells(int limit, Iteration iteration){
+    public void generateBlankCells(int limit, Iteration iteration) {
+        this.limit = limit;
         board.setIterationOrder(iteration);
         ListIterator<Cell> iterator = board.iterator();
         board.save();
 
-        while (iterator.hasNext()){
-            current = iterator.next();
+        while (iterator.hasNext()) {
+            Cell current = iterator.next();
             current.save();
 
-            if (!current.isBlank()){
+            if (!current.isBlank()) {
                 current.setValue(0);
-            }else{
+            } else {
                 continue;
             }
 
@@ -55,14 +60,14 @@ public class Creator {
 
             if (hasMoreThanOneSolution(blankCells)) {
                 board.load();
-            }else{
+            } else {
                 current.save();
             }
         }
         board.setIterationOrder(Iteration.LINEAR);
     }
 
-    public boolean isOutOfLimits(int limit){
+    public boolean isOutOfLimits(int limit) {
         return blankCells.size() >= limit;
     }
 

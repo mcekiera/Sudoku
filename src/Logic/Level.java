@@ -7,14 +7,14 @@ public enum Level {
     VERY_EASY(28,30,Iteration.RANDOM),
     EASY(31,44,Iteration.RANDOM),
     MODERATE(45,49,Iteration.S_SHAPE),
-    HARD(40,54,Iteration.S_SHAPE),
+    HARD(49,54,Iteration.S_SHAPE),
     VERY_HARD(55,61,Iteration.LINEAR);
 
     private final int min;
     private final int max;
     private final Iteration iterationType;
 
-    Level(int min, int max, Iteration iterationType){
+    Level(int min, int max, Iteration iterationType) {
         this.min = min;
         this.max = max;
         this.iterationType = iterationType;
