@@ -1,6 +1,8 @@
 package Logic;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Solver object solves a given Sudoku board. It is used in stage of filling an empty Sudoku board with digits,
@@ -23,7 +25,7 @@ public class Solver {
      * a digit into the blank Cell objects, if it pass the game conditions. If there is no such value, it backtrace
      * to the last filled Cell object, which value could be changed. In effect it creates or solves a Sudoku puzzle.
      * @param blankCells List of blank Cell objects from given Sudoku game board.
-     * @param limit
+     * @param limit randomly selected number of blank Cells the Sudoku board on given difficulty level could have.
      * @return the number of found solutions.
      */
     public int solve(List<Cell> blankCells, int limit){

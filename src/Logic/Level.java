@@ -10,8 +10,8 @@ public enum Level {
 
     VERY_EASY(28,30,Iteration.RANDOM),
     EASY(31,44,Iteration.RANDOM),
-    MODERATE(45,49,Iteration.S_SHAPE),
-    HARD(49,54,Iteration.S_SHAPE),
+    MODERATE(45,49,Iteration.S_LIKE),
+    HARD(49,54,Iteration.S_LIKE),
     VERY_HARD(55,61,Iteration.LINEAR);
 
     private final int min;

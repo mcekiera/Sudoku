@@ -86,18 +86,13 @@ public class Cell{
     /**
      * Compares two objects of Cell class.
      * @param obj object to which given Cell object is compared.
-     * @return Returns true if both Cell have same value, or false if compare Cell objects have different value
-     * or one or both object are null.
+     * @return Returns true if both Cells have same value,  row and column field values, or false if compare
+     * Cell objects have different values or one or both objects are null.
      */
     @Override
     public boolean equals(Object obj) {
-        if(obj == null) {
-            return false;
-        } else if(obj.getClass() == this.getClass()) {
-            return ((Cell) obj).getValue() == this.getValue() && ((Cell) obj).getRow() == this.getRow() && ((Cell) obj).getColumn() == this.getColumn();
-        } else {
-            return false;
-        }
+        return obj != null && obj.getClass() == this.getClass() && ((Cell) obj).getValue() == this.getValue() &&
+                ((Cell) obj).getRow() == this.getRow() && ((Cell) obj).getColumn() == this.getColumn();
     }
 
     /**

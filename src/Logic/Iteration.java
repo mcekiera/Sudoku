@@ -6,5 +6,5 @@ package Logic;
  */
 
 public enum Iteration {
-    LINEAR, RANDOM, S_SHAPE;
+    LINEAR, RANDOM, S_LIKE;
 }
