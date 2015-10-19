@@ -61,6 +61,7 @@ public class Player {
         public void actionPerformed(ActionEvent e) {
             creator.create((Level)level.getSelectedItem());
             grid.getBlocks(creator.getBoard().getBlocks());
+            System.out.println(creator.getBoard());
             frame.revalidate();
         }
     }

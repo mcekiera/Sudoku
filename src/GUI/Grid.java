@@ -33,6 +33,7 @@ public class Grid extends Container implements Iterable<Field>{
             blockPanel.setBorder(new LineBorder(Color.black,1));
             grid.add(blockPanel);
         }
+        add(grid);
         return grid;
     }
 
