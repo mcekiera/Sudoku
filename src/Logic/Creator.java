@@ -34,6 +34,9 @@ public class Creator {
         return limit;
     }
 
+    /**
+     * @return Board object recently created by Creator.
+     */
     public Board getBoard(){
         return board;
     }
@@ -46,6 +49,10 @@ public class Creator {
     }
 
 
+    /**
+     * Iterates through all Cell of given board, and call setSolution() method, to save solution for future comparing
+     * to user input.
+     */
     private void saveSolution(){
         for(Cell cell : board){
             cell.setSolution();

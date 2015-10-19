@@ -16,11 +16,6 @@ public class Field extends JPanel {
     Cell cell;
 
     public Field (Cell cell) {
-        textField = getFormattedTextField("*");
-        textField.setHorizontalAlignment(JTextField.CENTER);
-        textField.setBorder(new EmptyBorder(0,0,0,0));
-        textField.setColumns(2);
-        textField.setFont(new Font("Ariala", Font.BOLD, 30));
         this.cell = cell;
         setLayout(new BorderLayout());
         createField();
@@ -39,18 +34,23 @@ public class Field extends JPanel {
         return false;
     }
 
-    public void solve(){
+    public void showSolution(){
         textField.setForeground(new JTextField().getForeground());
         textField.setText(String.valueOf(cell.getSolution()));
     }
 
     private void createField() {
+        textField = getFormattedTextField("*");
+        textField.setHorizontalAlignment(JTextField.CENTER);
+        textField.setBorder(new EmptyBorder(0,0,0,0));
+        textField.setColumns(2);
+        textField.setFont(new Font("Ariala", Font.BOLD, 30));
         if(!cell.isBlank()) {
             textField.setText(String.valueOf(cell.getValue()));
             textField.setEditable(false);
 
         } else {
-            add(sideHelper(), BorderLayout.EAST);
+            getHelpers();
         }
         add(textField, BorderLayout.CENTER);
         setBorder(new EtchedBorder(EtchedBorder.RAISED));
@@ -79,10 +79,8 @@ public class Field extends JPanel {
         return mask;
     }
 
-    private JPanel sideHelper() {
+    private void getHelpers() {
         textField.setLayout(new GridLayout(4,4));
-        JPanel panel = new JPanel(new GridLayout(3,1));
-        int[] x = {0,3,4,7,8,11,12,15};
         for(int i = 0; i < 16; i++) {
             if(i == 0 || i == 3|| i == 4|| i == 7|| i == 8|| i == 11|| i == 12|| i == 15) {
                 JFormattedTextField field = getFormattedTextField("*");
@@ -93,15 +91,14 @@ public class Field extends JPanel {
                 field.setFont(new Font("Arial", Font.PLAIN, 10));
                 textField.add(field);
             }else {
-                JPanel panel1 = new JPanel();
-                panel1.setOpaque(false);
-                textField.add(panel1);
+                JPanel opaqueFiller = new JPanel();
+                opaqueFiller.setOpaque(false);
+                textField.add(opaqueFiller);
             }
         }
-        return panel;
     }
 
-
+    //todo fields g³owne i pomocnicze moga mieæ w pewnym zakresie wspóln¹ metodê kreacyjn¹
 
 
 }

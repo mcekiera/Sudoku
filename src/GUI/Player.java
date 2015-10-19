@@ -3,7 +3,6 @@ package GUI;
 import Logic.Board;
 import Logic.Creator;
 import Logic.Level;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -26,33 +25,46 @@ public class Player {
 
     private void createGUI(){
         frame = new JFrame();
+        frame.setTitle("SUDOKU");
         frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        frame.add(getBackground(), BorderLayout.CENTER);
-        frame.add(getOptions(),BorderLayout.SOUTH);
+        frame.add(createBackground(), BorderLayout.CENTER);
+        frame.add(createOptions(),BorderLayout.SOUTH);
         frame.pack();
         frame.setVisible(true);
     }
 
-    private JPanel getBackground(){
+    private JPanel createBackground(){
         JPanel background = new JPanel(new BorderLayout());
         grid = new Grid(new Board());
         background.add(grid);
         return background;
     }
-    public JPanel getOptions(){
+    public JPanel createOptions(){
+        JPanel panel = new JPanel(new GridLayout(1,4,2,2));
         level = new JComboBox<Level>(Level.values());
+        panel.add(level);
+        panel.add(createGenerateBt());
+        panel.add(createCheckBt());
+        panel.add(createSolveBt());
+        return panel;
+    }
+
+    private JButton createGenerateBt(){
         JButton generate = new JButton("GENERATE");
         generate.addActionListener(new GenerateListener());
+        return generate;
+    }
+
+    private JButton createCheckBt(){
         JButton check = new JButton("CHECK SOLUTION");
         check.addActionListener(new CheckListener());
-        JButton solve = new JButton("SOLVE");
+        return check;
+    }
+
+    private JButton createSolveBt(){
+        JButton solve = new JButton("SHOW SOLUTION");
         solve.addActionListener(new SolveListener());
-        JPanel panel = new JPanel(new GridLayout(1,4,2,2));
-        panel.add(level);
-        panel.add(generate);
-        panel.add(check);
-        panel.add(solve);
-        return panel;
+        return solve;
     }
 
     public static void main(String[] args){
@@ -62,12 +74,12 @@ public class Player {
     private class GenerateListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            creator.create((Level)level.getSelectedItem());
+            creator.create((Level) level.getSelectedItem());
             grid.getBlocks(creator.getBoard().getBlocks());
-            System.out.println(creator.getBoard());
             frame.revalidate();
         }
     }
+
 
     private class CheckListener implements ActionListener {
         @Override
@@ -77,19 +89,21 @@ public class Player {
                 if(!field.checkSolution()){
                     result = false;
                 }
-
             }
             if(result){
-                JOptionPane.showMessageDialog(frame,"CONGRATULATIONS", "SUCCES",JOptionPane.INFORMATION_MESSAGE);
+                JOptionPane.showMessageDialog(frame, "CONGRATULATIONS", "SUCCESS", JOptionPane.INFORMATION_MESSAGE);
             }
         }
     }
 
+    /**
+     * ActionListener responsible for solving puzzle not finished by User.
+     */
     private class SolveListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
             for(Field field : grid){
-                field.solve();
+                field.showSolution();
             }
         }
     }

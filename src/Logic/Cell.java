@@ -76,10 +76,17 @@ public class Cell{
         value = save;
     }
 
+    /**
+     * Save a value which is solution for given Cell in particular game board for future use.
+     */
     public void setSolution(){
         solution = value;
     }
 
+    /**
+     * Retrieves saved value as solution.
+     * @return value which is solution for given Cell.
+     */
     public int getSolution(){
         return solution;
     }
