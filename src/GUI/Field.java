@@ -27,16 +27,21 @@ public class Field extends JPanel {
     }
 
     public boolean checkSolution(){
-        if(textField.getText().equals(String.valueOf(cell.getSolution()))){
-            return true;
-        }else{
-            textField.setForeground(Color.RED);
-            return false;
+        textField.setForeground(new JTextField().getForeground());
+        if(!textField.getText().equals(" ")) {
+            if (Integer.parseInt(textField.getText()) == cell.getSolution()) {
+                return true;
+            } else {
+                textField.setForeground(Color.RED);
+                return false;
+            }
         }
+        return false;
     }
 
-    public int readValue() {
-        return cell.isBlank() ? 0 : Integer.parseInt(textField.getText());
+    public void solve(){
+        textField.setForeground(new JTextField().getForeground());
+        textField.setText(String.valueOf(cell.getSolution()));
     }
 
     private void createField() {
@@ -81,7 +86,7 @@ public class Field extends JPanel {
         for(int i = 0; i < 16; i++) {
             if(i == 0 || i == 3|| i == 4|| i == 7|| i == 8|| i == 11|| i == 12|| i == 15) {
                 JFormattedTextField field = getFormattedTextField("*");
-
+                field.setBackground(new Color(250,250,250));
                 field.setBorder(null);
                 field.setHorizontalAlignment(JFormattedTextField.CENTER);
                 field.setColumns(1);

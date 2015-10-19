@@ -20,6 +20,7 @@ public class Creator {
     public Board create(Level level) {
         board = new Board();
         getFullBoard();
+        saveSolution();
         randomizeBlankCellPositions(level);
         generateBlankCells(level.getBlankCellsNumber(), level.getIterationType());
         board.save();

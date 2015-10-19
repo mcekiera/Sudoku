@@ -45,10 +45,13 @@ public class Player {
         generate.addActionListener(new GenerateListener());
         JButton check = new JButton("CHECK SOLUTION");
         check.addActionListener(new CheckListener());
-        JPanel panel = new JPanel(new GridLayout(1,3,2,2));
+        JButton solve = new JButton("SOLVE");
+        solve.addActionListener(new SolveListener());
+        JPanel panel = new JPanel(new GridLayout(1,4,2,2));
         panel.add(level);
         panel.add(generate);
         panel.add(check);
+        panel.add(solve);
         return panel;
     }
 
@@ -75,6 +78,18 @@ public class Player {
                     result = false;
                 }
 
+            }
+            if(result){
+                JOptionPane.showMessageDialog(frame,"CONGRATULATIONS", "SUCCES",JOptionPane.INFORMATION_MESSAGE);
+            }
+        }
+    }
+
+    private class SolveListener implements ActionListener {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            for(Field field : grid){
+                field.solve();
             }
         }
     }
