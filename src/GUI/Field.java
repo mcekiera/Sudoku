@@ -26,6 +26,15 @@ public class Field extends JPanel {
         createField();
     }
 
+    public boolean checkSolution(){
+        if(textField.getText().equals(String.valueOf(cell.getSolution()))){
+            return true;
+        }else{
+            textField.setForeground(Color.RED);
+            return false;
+        }
+    }
+
     public int readValue() {
         return cell.isBlank() ? 0 : Integer.parseInt(textField.getText());
     }

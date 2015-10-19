@@ -44,6 +44,13 @@ public class Creator {
         solver.setBoard(board).solve(board.getCells(), 1);
     }
 
+
+    private void saveSolution(){
+        for(Cell cell : board){
+            cell.setSolution();
+        }
+    }
+
     /**
      * It is used before generateBlankCells() method in cases when S-like iteration type is used with number of blank
      * Cells lower or near the half of Cells number. This prevents the game board to be unevenly distributed on board.

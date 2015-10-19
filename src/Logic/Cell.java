@@ -9,6 +9,7 @@ public class Cell{
     final private int block;
     private int value;
     private int save;
+    private int solution;
 
     public Cell(int row, int column) {
         this.row = row;
@@ -75,6 +76,13 @@ public class Cell{
         value = save;
     }
 
+    public void setSolution(){
+        solution = value;
+    }
+
+    public int getSolution(){
+        return solution;
+    }
     /**
      * @return value currently held by the given cell.
      */

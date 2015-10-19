@@ -10,11 +10,13 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 public class Player {
-    JFrame frame;
-    JComboBox<Level> level;
-    Grid grid;
+    private JFrame frame;
+    private JComboBox<Level> level;
+    private Grid grid;
+    private Creator creator;
 
     public Player(){
+        creator = new Creator();
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
                 createGUI();
@@ -57,7 +59,6 @@ public class Player {
     private class GenerateListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
-            Creator creator = new Creator();
             creator.create((Level)level.getSelectedItem());
             grid.getBlocks(creator.getBoard().getBlocks());
             frame.revalidate();
@@ -67,7 +68,13 @@ public class Player {
     private class CheckListener implements ActionListener {
         @Override
         public void actionPerformed(ActionEvent e) {
+            boolean result = true;
+            for(Field field : grid){
+                if(!field.checkSolution()){
+                    result = false;
+                }
 
+            }
         }
     }
 }
