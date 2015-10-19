@@ -13,7 +13,7 @@ public class Cell{
     public Cell(int row, int column) {
         this.row = row;
         this.column = column;
-        block = Util.specifyBlock(row, column);
+        block = specifyBlock();
     }
 
     /**
@@ -98,5 +98,15 @@ public class Cell{
         } else {
             return false;
         }
+    }
+
+    /**
+     * @return block of Sudoku game board, to which given Cell belongs.
+     */
+    public int specifyBlock() {
+        int x = row /3;
+        int y = column /3;
+        int modifier = row <3 ? 0 : row <6 ? 2 : 4;
+        return x+y+modifier;
     }
 }

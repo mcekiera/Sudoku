@@ -1,5 +1,6 @@
 package Logic;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 
@@ -46,6 +47,7 @@ public class Creator {
             Cell current = iterator.next();
             current.save();
 
+
             if (!current.isBlank()) {
                 current.setValue(0);
             } else {
@@ -53,7 +55,7 @@ public class Creator {
             }
 
             solver.setBoard(board);
-            blankCells = Util.getBlankCells(board);
+            blankCells = getBlankCells(board);
             if(isOutOfLimits(limit)) {
                 break;
             }
@@ -72,11 +74,21 @@ public class Creator {
     }
 
     private boolean hasMoreThanOneSolution(List<Cell> blanks) {
-        return solver.solve(blanks,3) != 1;
+        return solver.solve(blanks, 3) != 1;
     }
 
     public static void main (String[] args) {
         Creator creator = new Creator();
         System.out.println(creator.create(Level.VERY_EASY));
+    }
+
+    public static ArrayList<Cell> getBlankCells(Board board) {
+        ArrayList<Cell> blank = new ArrayList<Cell>();
+        for(Cell cell : board) {
+            if(cell.isBlank()) {
+                blank.add(cell);
+            }
+        }
+        return blank;
     }
 }

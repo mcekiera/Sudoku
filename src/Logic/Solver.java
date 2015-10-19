@@ -28,7 +28,7 @@ public class Solver {
      */
     public int solve(List<Cell> blankCells, int limit){
         if(index < blankCells.size()){
-            for(int i : Util.randomOrderDigits()){
+            for(int i : randomOrderDigits()){
                 if(testValue(blankCells.get(index), i)){
                     index += 1;
                     if(solve(blankCells, limit)>= limit){
@@ -82,5 +82,17 @@ public class Solver {
             cell.setValue(i);
             return true;
         }
+    }
+
+    /**
+     * @return return a List containing a digits (without 0) in random order.
+     */
+    public List<Integer> randomOrderDigits() {
+        List<Integer> values = new ArrayList<Integer>();
+        for(int i = 1; i <= 9; i++) {
+            values.add(i);
+        }
+        Collections.shuffle(values);
+        return values;
     }
 }

@@ -11,7 +11,7 @@ public class Board implements Iterable<Cell>, Cloneable {
 
     public Board() {
         grid = new Cell[9][9];
-        blocks = Util.createBlocks(9);
+        blocks = createBlocks(9);
         cells = new ArrayList<Cell>(81);
         createCells();
     }
@@ -87,7 +87,7 @@ public class Board implements Iterable<Cell>, Cloneable {
     }
 
     private ListIterator<Cell> sShapeOrderIterator() {
-        return Util.s_ShapedList(grid).listIterator();
+        return s_ShapedList().listIterator();
     }
 
     @Override
@@ -114,6 +114,35 @@ public class Board implements Iterable<Cell>, Cloneable {
             result += "\n";
         }
         return result;
+    }
+
+    public List<List<Cell>> createBlocks(int capacity) {
+        List<List<Cell>> list = new ArrayList<List<Cell>>(capacity);
+        for(int i = 0; i < capacity; i++) {
+            List<Cell> temp = new ArrayList<Cell>();
+            list.add(temp);
+        }
+        return list;
+    }
+
+    /**
+     * Using a 2D Cell array containing all Cell objects of given Sudoku game board, this method crates List of
+     * same elements with changed order, which allows to iterate through Sudoku game board in S-like order.
+     * @return List of Cells of given game board with changed order.
+     */
+    public List<Cell> s_ShapedList() {
+        List<Cell> sShape = new ArrayList<Cell>();
+        List<Cell> temp;
+        for(int i = 0; i < 9; i++) {
+            if((i+1)%2==0) {
+                temp = new ArrayList<Cell>(Arrays.asList(grid[i]));
+                Collections.reverse(temp);
+                sShape.addAll(temp);
+            } else {
+                sShape.addAll(Arrays.asList(grid[i]));
+            }
+        }
+        return sShape;
     }
 
 }

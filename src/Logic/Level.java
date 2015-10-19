@@ -2,6 +2,10 @@ package Logic;
 
 import java.util.Random;
 
+/**
+ * Enum class for difficulty levels. Its min and max fields set a range, from which the number of blank cells
+ * is randomly selected.
+ */
 public enum Level {
 
     VERY_EASY(28,30,Iteration.RANDOM),
@@ -20,10 +24,18 @@ public enum Level {
         this.iterationType = iterationType;
     }
 
+    /**
+     * It causes a differentiation of number of blank cells in game boards on the same difficulty level,
+     * in separate games.
+     * @return random number from range from minimal to maximal number of blank cells for given difficulty level.
+     */
     public int getBlankCellsNumber(){
         return new Random().nextInt((max - min) + 1) + min;
     }
 
+    /**
+     * @return a iteration type used in creation of game boards on given difficulty level.
+     */
     public Iteration getIterationType(){
         return iterationType;
     }
