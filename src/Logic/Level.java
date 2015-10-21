@@ -14,9 +14,9 @@ public enum Level {
     HARD(49,54,Iteration.S_LIKE),
     VERY_HARD(55,61,Iteration.LINEAR);
 
-    private final int min;
-    private final int max;
-    private final Iteration iterationType;
+    final private int min;
+    final private  int max;
+    final private  Iteration iterationType;
 
     Level(int min, int max, Iteration iterationType) {
         this.min = min;

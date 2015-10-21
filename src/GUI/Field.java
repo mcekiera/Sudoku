@@ -15,6 +15,9 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.text.ParseException;
 
+/**
+ * Part of GUI which represent Cell.
+ */
 public class Field extends JPanel {
     JFormattedTextField textField;
     Cell cell;
@@ -25,6 +28,10 @@ public class Field extends JPanel {
         createField();
     }
 
+    /**
+     * It check if solution provided by User is valid, if not it change colour of Font to red.
+     * @return true if solution is valid.
+     */
     public boolean checkSolution(){
         textField.setForeground(new JTextField().getForeground());
         if(!textField.getText().equals(" ")) {
@@ -38,15 +45,25 @@ public class Field extends JPanel {
         return false;
     }
 
+    /**
+     * Compare input value and saved solution.
+     * @return true if both values are the same.
+     */
     public boolean inputMatchesSolution(){
         return Integer.parseInt(textField.getText()) == cell.getSolution();
     }
 
+    /**
+     * Fill Cells with values which were saved as solution.
+     */
     public void showSolution(){
         textField.setForeground(new JTextField().getForeground());
         textField.setText(String.valueOf(cell.getSolution()));
     }
 
+    /**
+     * Creates Field GUI.
+     */
     private void createField() {
         textField = setFormatter();
         textField.setFont(new Font("Ariala", Font.BOLD, 30));
@@ -60,6 +77,10 @@ public class Field extends JPanel {
         setBorder(new EtchedBorder(EtchedBorder.RAISED));
     }
 
+    /**
+     * @param format allowed by JFormattedTextField.
+     * @return JFormattedTextField with MouseListener, which will select all content of Field if clicked.
+     */
     private JFormattedTextField getFormattedTextField(String format) {
         final JFormattedTextField field = new JFormattedTextField(getMaskFormatter(format));
         field.addMouseListener(new MouseAdapter() {
