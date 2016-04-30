@@ -1,5 +1,5 @@
 # Sudoku
-Sudoku
+
 It is a my project of popular Sudoku game. The application can generate a Sudoku puzzle of 5 difficulty levels, 
 from very easy to very hard, check user answer and provide the correct answer. 
 
