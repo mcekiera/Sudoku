@@ -14,7 +14,7 @@ Depending on difficulty level choice, the creation of new game board could take 
 - HARD - 49 to 54 blanks- S-like iteration model,
 - VERY HARD - 55 to 61 blanks- linear iteration model,
 
-The creational model is loosely based on <a href="zhangroup.aporc.org/images/files/Paper_3485.pdf"> this document.</a> 
+The creational model is loosely based on <a href="http://zhangroup.aporc.org/images/files/Paper_3485.pdf"> this document.</a> 
 
 
 <i>Another project which gives me a lot of fun, however board creation algorithms were challenging. Effect is not entirely satisfying, as creation of extremely difficult level board take a lot of time. Also the program flow was criticised on <a href="http://codereview.stackexchange.com/questions/108143/sudoku-game-with-varied-difficulty-level">SO Code Review</a>. Whats more, failure in MVC implementation and lack of test, make it not the best of my projects, but in the end, as a recreational, amateur project I am pleased with result. </i>
